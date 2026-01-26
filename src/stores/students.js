@@ -1,0 +1,23 @@
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
+
+export const useStudentStore = defineStore('students', () => {
+    // State
+    const items = ref([
+        { id: 1, name: '张三', studentNo: '2023001', college: '自动化学院', major: '自动化', class: '自动化2301', phone: '13800138000', email: 'zhangsan@edu.cn', status: 'active' },
+        { id: 2, name: '李四', studentNo: '2023002', college: '自动化学院', major: '机器人工程', class: '机器人2302', phone: '13900139000', email: 'lisi@edu.cn', status: 'active' },
+        { id: 3, name: '王五', studentNo: '2023003', college: '自动化学院', major: '自动化', class: '自动化2301', phone: '13700137000', email: 'wangwu@edu.cn', status: 'leave' },
+        { id: 4, name: '赵六', studentNo: '2023004', college: '自动化学院', major: '测控技术', class: '测控2301', phone: '13600136000', email: 'zhaoliu@edu.cn', status: 'active' },
+        { id: 5, name: '钱七', studentNo: '2023005', college: '自动化学院', major: '人工智能', class: '智能2301', phone: '13500135000', email: 'qianqi@edu.cn', status: 'warning' },
+    ])
+
+    // Getters
+    const totalCount = computed(() => items.value.length)
+    const warningCount = computed(() => items.value.filter(s => s.status === 'warning').length)
+
+    return {
+        items,
+        totalCount,
+        warningCount
+    }
+})
