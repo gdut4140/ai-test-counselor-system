@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCourseStore } from '../../stores/courses'
+import { useStatusMap } from '../../composables/useStatusMap'
 import {
     Search,
     BookOpen,
@@ -12,14 +13,9 @@ import {
 } from 'lucide-vue-next'
 
 const courseStore = useCourseStore()
-const { courses } = storeToRefs(courseStore) // Make courses reactive
-// const courses = ref([...]) <-- Removed local definition
+const { courses } = storeToRefs(courseStore)
+const { getStatusClass, getStatusLabel } = useStatusMap()
 
-const statusColors = {
-    ongoing: 'text-emerald-600',
-    warning: 'text-amber-600',
-    ended: 'text-slate-400'
-}
 </script>
 
 <template>
@@ -88,8 +84,12 @@ const statusColors = {
                             {{ course.name.charAt(0) }}
                         </div>
                         <div>
-                            <h4 class="font-bold text-slate-900">{{ course.name }} <span
-                                    class="text-xs font-normal text-slate-400 ml-2">{{ course.code }}</span></h4>
+                            <div class="flex items-center gap-2">
+                                <h4 class="font-bold text-slate-900">{{ course.name }}</h4>
+                                <span class="text-xs font-normal text-slate-400">{{ course.code }}</span>
+                                <span class="px-2 py-0.5 rounded-full text-xs font-medium border"
+                                    :class="getStatusClass(course.status)">{{ getStatusLabel(course.status) }}</span>
+                            </div>
                             <div class="flex flex-wrap items-center gap-4 mt-1">
                                 <span class="text-sm text-slate-500 flex items-center">
                                     <Clock class="w-3.5 h-3.5 mr-1.5" /> {{ course.time }}

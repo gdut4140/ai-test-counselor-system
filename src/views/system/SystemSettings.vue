@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useAuthStore } from '../../stores/auth'
 import { useSettingsStore } from '../../stores/settings'
 import { storeToRefs } from 'pinia'
+import { useTabs } from '../../composables/useTabs'
 import {
     User,
     Bell,
@@ -17,10 +18,20 @@ const { user } = storeToRefs(authStore)
 const settingsStore = useSettingsStore()
 const { notificationSettings } = storeToRefs(settingsStore)
 
-const activeSection = ref('profile')
+// Sidebar tabs configuration
+const tabsData = [
+    { id: 'profile', name: '个人资料', icon: User },
+    { id: 'notifications', name: '通知设置', icon: Bell },
+    { id: 'security', name: '账号安全', icon: Lock },
+    { id: 'roles', name: '角色权限', icon: Shield },
+]
+
+const { activeTabId: activeSection, setTab: setActiveSection, currentTab } = useTabs(tabsData, 'profile')
+
 const formName = ref(user.value?.name || '')
 const formPhone = ref('13800138000') // Mock data or add to store
 const formEmail = ref('wang@edu.cn') // Mock data or add to store
+
 
 // const notificationSettings = ref([...]) <-- Removed local definition
 </script>
@@ -33,33 +44,12 @@ const formEmail = ref('wang@edu.cn') // Mock data or add to store
             <!-- Settings Sidebar -->
             <div class="lg:col-span-1">
                 <nav class="space-y-1">
-                    <button @click="activeSection = 'profile'"
+                    <button v-for="tab in tabsData" :key="tab.id" @click="setActiveSection(tab.id)"
                         class="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors"
-                        :class="activeSection === 'profile' ? 'bg-primary-50 text-primary-700' : 'text-slate-600 hover:bg-slate-50'">
-                        <User class="w-5 h-5 mr-3"
-                            :class="activeSection === 'profile' ? 'text-primary-600' : 'text-slate-400'" />
-                        个人资料
-                    </button>
-                    <button @click="activeSection = 'notifications'"
-                        class="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors"
-                        :class="activeSection === 'notifications' ? 'bg-primary-50 text-primary-700' : 'text-slate-600 hover:bg-slate-50'">
-                        <Bell class="w-5 h-5 mr-3"
-                            :class="activeSection === 'notifications' ? 'text-primary-600' : 'text-slate-400'" />
-                        通知设置
-                    </button>
-                    <button @click="activeSection = 'security'"
-                        class="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors"
-                        :class="activeSection === 'security' ? 'bg-primary-50 text-primary-700' : 'text-slate-600 hover:bg-slate-50'">
-                        <Lock class="w-5 h-5 mr-3"
-                            :class="activeSection === 'security' ? 'text-primary-600' : 'text-slate-400'" />
-                        账号安全
-                    </button>
-                    <button @click="activeSection = 'roles'"
-                        class="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors"
-                        :class="activeSection === 'roles' ? 'bg-primary-50 text-primary-700' : 'text-slate-600 hover:bg-slate-50'">
-                        <Shield class="w-5 h-5 mr-3"
-                            :class="activeSection === 'roles' ? 'text-primary-600' : 'text-slate-400'" />
-                        角色权限
+                        :class="activeSection === tab.id ? 'bg-primary-50 text-primary-700' : 'text-slate-600 hover:bg-slate-50'">
+                        <component :is="tab.icon" class="w-5 h-5 mr-3"
+                            :class="activeSection === tab.id ? 'text-primary-600' : 'text-slate-400'" />
+                        {{ tab.name }}
                     </button>
                 </nav>
             </div>

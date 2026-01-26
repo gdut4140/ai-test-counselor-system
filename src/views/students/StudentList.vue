@@ -2,6 +2,7 @@
 import { ref } from 'vue' // Keep ref for local UI state like activeTab
 import { storeToRefs } from 'pinia'
 import { useStudentStore } from '../../stores/students'
+import { useStatusMap } from '../../composables/useStatusMap'
 import {
     Search,
     Filter,
@@ -14,20 +15,10 @@ import {
 
 const studentStore = useStudentStore()
 const { items: students, totalCount } = storeToRefs(studentStore)
+const { getStatusClass, getStatusLabel } = useStatusMap()
 
 const studentsList = students // alias for template compatibility if needed, but better to use students directly
 
-const statusStyles = {
-    active: 'bg-emerald-50 text-emerald-700 ring-emerald-600/20',
-    leave: 'bg-amber-50 text-amber-700 ring-amber-600/20',
-    warning: 'bg-rose-50 text-rose-700 ring-rose-600/20',
-}
-
-const statusLabels = {
-    active: '在校',
-    leave: '请假',
-    warning: '预警',
-}
 </script>
 
 <template>
@@ -135,9 +126,9 @@ const statusLabels = {
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span
-                                    class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
-                                    :class="statusStyles[student.status]">
-                                    {{ statusLabels[student.status] }}
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border"
+                                    :class="getStatusClass(student.status)">
+                                    {{ getStatusLabel(student.status) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
