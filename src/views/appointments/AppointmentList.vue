@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import {
     Search,
     Filter,
@@ -10,18 +10,16 @@ import {
     FileText
 } from 'lucide-vue-next'
 import { useAppointmentStore } from '../../stores/appointments'
-import { computed } from 'vue' // Import computed
 import { storeToRefs } from 'pinia'
-import { useStatusMap } from '../../composables/useStatusMap'
 import { useTabs } from '../../composables/useTabs'
+import PageHeader from '../../components/PageHeader.vue'
+import StatusBadge from '../../components/StatusBadge.vue'
 
 const appointmentStore = useAppointmentStore()
 // Use storeToRefs to keep reactivity for state/getters, but not for actions
 const { items: appointments, pendingCount } = storeToRefs(appointmentStore)
 // Actions can be destructured directly
 const { updateStatus } = appointmentStore
-
-const { getStatusClass, getStatusLabel } = useStatusMap()
 
 const tabsData = [
     { id: 'all', name: '全部申请' },
@@ -42,16 +40,15 @@ const filteredAppointments = computed(() => {
 <template>
     <div class="space-y-6">
         <!-- Page Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <h2 class="text-2xl font-bold text-slate-900">预约管理</h2>
-            <div class="flex items-center gap-3">
+        <PageHeader title="预约管理">
+            <template #actions>
                 <button
                     class="flex items-center px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
                     <Download class="w-4 h-4 mr-2" />
                     导出记录
                 </button>
-            </div>
-        </div>
+            </template>
+        </PageHeader>
 
         <!-- Filters & Search -->
         <div
@@ -129,18 +126,10 @@ const filteredAppointments = computed(() => {
                             </td>
                             <td class="px-6 py-4">
                                 <div class="text-sm text-slate-600 truncate max-w-xs" :title="apt.reason">{{ apt.reason
-                                    }}</div>
+                                }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="px-2.5 py-1 text-xs font-medium rounded-full border flex items-center w-fit gap-1.5"
-                                    :class="getStatusClass(apt.status)">
-                                    <span v-if="apt.status === 'pending'"
-                                        class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                                    <span v-if="apt.status === 'approved'"
-                                        class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                    {{ getStatusLabel(apt.status) }}
-                                </span>
+                                <StatusBadge :status="apt.status" show-dot />
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <div class="flex items-center justify-end gap-2">

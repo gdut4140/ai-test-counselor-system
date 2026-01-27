@@ -3,7 +3,8 @@ import { computed } from 'vue' // Keep ref if needed for modals etc
 import { storeToRefs } from 'pinia'
 import { useActivityStore } from '../../stores/activities'
 import { useTabs } from '../../composables/useTabs'
-import { useStatusMap } from '../../composables/useStatusMap'
+import PageHeader from '../../components/PageHeader.vue'
+import StatusBadge from '../../components/StatusBadge.vue'
 import {
     Search,
     Filter,
@@ -16,8 +17,6 @@ import {
 
 const activityStore = useActivityStore()
 const { items: activities, registeringCount } = storeToRefs(activityStore)
-
-const { getStatusClass, getStatusLabel } = useStatusMap()
 
 const tabsData = [
     { id: 'all', name: '全部活动' },
@@ -40,16 +39,15 @@ const filteredActivities = computed(() => {
 <template>
     <div class="space-y-6">
         <!-- Page Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <h2 class="text-2xl font-bold text-slate-900">活动管理</h2>
-            <div class="flex items-center gap-3">
+        <PageHeader title="活动管理">
+            <template #actions>
                 <button
                     class="flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors shadow-sm shadow-primary-500/20">
                     <Plus class="w-4 h-4 mr-2" />
                     发布活动
                 </button>
-            </div>
-        </div>
+            </template>
+        </PageHeader>
 
         <!-- Filters & Search -->
         <div
@@ -85,11 +83,7 @@ const filteredActivities = computed(() => {
                     :class="activity.cover">
                     <Calendar class="w-12 h-12 opacity-50" />
                     <div class="absolute top-3 right-3">
-                        <span
-                            class="px-2.5 py-1 text-xs font-medium rounded-full border bg-white/90 backdrop-blur-sm shadow-sm"
-                            :class="getStatusClass(activity.status)">
-                            {{ getStatusLabel(activity.status) }}
-                        </span>
+                        <StatusBadge :status="activity.status" />
                     </div>
                 </div>
 

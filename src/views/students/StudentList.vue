@@ -2,7 +2,8 @@
 import { ref } from 'vue' // Keep ref for local UI state like activeTab
 import { storeToRefs } from 'pinia'
 import { useStudentStore } from '../../stores/students'
-import { useStatusMap } from '../../composables/useStatusMap'
+import PageHeader from '../../components/PageHeader.vue'
+import StatusBadge from '../../components/StatusBadge.vue'
 import {
     Search,
     Filter,
@@ -15,18 +16,24 @@ import {
 
 const studentStore = useStudentStore()
 const { items: students, totalCount } = storeToRefs(studentStore)
-const { getStatusClass, getStatusLabel } = useStatusMap()
 
 const studentsList = students // alias for template compatibility if needed, but better to use students directly
+
+const statusLabelMap = {
+    active: '在校',
+    leave: '请假',
+    warning: '预警'
+}
+
+const getStudentStatusLabel = (status) => statusLabelMap[status] || status
 
 </script>
 
 <template>
     <div class="space-y-6">
         <!-- Page Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <h2 class="text-2xl font-bold text-slate-900">学生管理</h2>
-            <div class="flex items-center gap-3">
+        <PageHeader title="学生管理">
+            <template #actions>
                 <button
                     class="flex items-center px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
                     <RefreshCw class="w-4 h-4 mr-2" />
@@ -37,8 +44,8 @@ const studentsList = students // alias for template compatibility if needed, but
                     <Download class="w-4 h-4 mr-2" />
                     导出名单
                 </button>
-            </div>
-        </div>
+            </template>
+        </PageHeader>
 
         <!-- Filters & Search -->
         <div
@@ -125,11 +132,7 @@ const studentsList = students // alias for template compatibility if needed, but
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border"
-                                    :class="getStatusClass(student.status)">
-                                    {{ getStatusLabel(student.status) }}
-                                </span>
+                                <StatusBadge :status="student.status" :label="getStudentStatusLabel(student.status)" />
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <button class="text-slate-400 hover:text-primary-600 transition-colors">

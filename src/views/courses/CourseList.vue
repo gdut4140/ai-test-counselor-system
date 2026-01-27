@@ -2,7 +2,8 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCourseStore } from '../../stores/courses'
-import { useStatusMap } from '../../composables/useStatusMap'
+import PageHeader from '../../components/PageHeader.vue'
+import StatusBadge from '../../components/StatusBadge.vue'
 import {
     Search,
     BookOpen,
@@ -15,7 +16,6 @@ import {
 
 const courseStore = useCourseStore()
 const { courses } = storeToRefs(courseStore)
-const { getStatusClass, getStatusLabel } = useStatusMap()
 const handleUrge = (courseName) => {
     alert(`📢 已向《${courseName}》缺课学生发送催促提醒！`);
     // 实际开发中，这里会调用后端 API 发送通知
@@ -25,16 +25,15 @@ const handleUrge = (courseName) => {
 <template>
     <div class="space-y-6">
         <!-- Page Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <h2 class="text-2xl font-bold text-slate-900">课程管理</h2>
-            <div class="flex items-center gap-3">
+        <PageHeader title="课程管理">
+            <template #actions>
                 <button
                     class="flex items-center px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
                     <CalendarCheck class="w-4 h-4 mr-2" />
                     考勤统计
                 </button>
-            </div>
-        </div>
+            </template>
+        </PageHeader>
 
         <!-- Stats Overview -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -45,7 +44,8 @@ const handleUrge = (courseName) => {
                 <div>
                     <p class="text-xs text-slate-500 font-medium uppercase">本学期课程</p>
                     <p class="text-2xl font-bold text-slate-900">12 <span
-                            class="text-sm font-normal text-slate-400">门</span></p>
+                            class="text-sm font-normal text-slate-400">门</span>
+                    </p>
                 </div>
             </div>
             <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
@@ -91,8 +91,7 @@ const handleUrge = (courseName) => {
                             <div class="flex items-center gap-2">
                                 <h4 class="font-bold text-slate-900">{{ course.name }}</h4>
                                 <span class="text-xs font-normal text-slate-400">{{ course.code }}</span>
-                                <span class="px-2 py-0.5 rounded-full text-xs font-medium border"
-                                    :class="getStatusClass(course.status)">{{ getStatusLabel(course.status) }}</span>
+                                <StatusBadge :status="course.status" />
                             </div>
                             <div class="flex flex-wrap items-center gap-4 mt-1">
                                 <span class="text-sm text-slate-500 flex items-center">
