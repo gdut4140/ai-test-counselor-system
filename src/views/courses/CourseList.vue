@@ -9,13 +9,17 @@ import {
     MapPin,
     Clock,
     MoreHorizontal,
-    CalendarCheck
+    CalendarCheck,
+    BellRing
 } from 'lucide-vue-next'
 
 const courseStore = useCourseStore()
 const { courses } = storeToRefs(courseStore)
 const { getStatusClass, getStatusLabel } = useStatusMap()
-
+const handleUrge = (courseName) => {
+    alert(`📢 已向《${courseName}》缺课学生发送催促提醒！`);
+    // 实际开发中，这里会调用后端 API 发送通知
+}
 </script>
 
 <template>
@@ -102,10 +106,16 @@ const { getStatusClass, getStatusLabel } = useStatusMap()
                     </div>
 
                     <div class="flex items-center gap-6 sm:pl-4 sm:border-l sm:border-slate-100">
+                        <button v-if="parseInt(course.attendance) < 95" @click="handleUrge(course.name)"
+                            class="flex items-center px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-medium hover:bg-rose-100 transition-all border border-rose-200 animate-pulse">
+                            <BellRing class="w-3.5 h-3.5 mr-1" />
+                            一键催促
+                        </button>
                         <div class="text-center">
                             <p class="text-xs text-slate-400 mb-0.5">任课教师</p>
                             <p class="text-sm font-medium text-slate-700">{{ course.teacher }}</p>
                         </div>
+
                         <div class="text-center">
                             <p class="text-xs text-slate-400 mb-0.5">出勤率</p>
                             <p class="text-sm font-bold"
