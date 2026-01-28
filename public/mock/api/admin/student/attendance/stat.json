@@ -1,0 +1,23 @@
+{
+    "code": 200,
+    "msg": "获取考勤统计成功",
+    "data": {
+        "classId": 2301,
+        "className": "计算机2301",
+        "attendanceRate": "96.3%",
+        "absentList": [
+            {
+                "studentId": 2002,
+                "studentName": "李四",
+                "studentIdNumber": "20230101002",
+                "absentCount": 2
+            },
+            {
+                "studentId": 2005,
+                "studentName": "陈七",
+                "studentIdNumber": "20230101005",
+                "absentCount": 1
+            }
+        ]
+    }
+}

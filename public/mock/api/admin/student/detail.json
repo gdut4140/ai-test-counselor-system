@@ -1,0 +1,16 @@
+{
+    "code": 200,
+    "msg": "获取学生详细信息成功",
+    "data": {
+        "id": 2001,
+        "studentName": "张三",
+        "studentIdNumber": "20230101001",
+        "college": "计算机学院",
+        "major": "计算机科学与技术",
+        "grade": "2023",
+        "className": "计算机2301",
+        "educationLevel": "本科",
+        "phone": "13800000011",
+        "email": "zhangsan@example.com"
+    }
+}

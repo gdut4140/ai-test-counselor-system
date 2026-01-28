@@ -1,0 +1,21 @@
+{
+    "code": 200,
+    "msg": "创建活动成功",
+    "data": {
+        "activityId": 201,
+        "activityName": "活动示例",
+        "activityType": "讲座",
+        "imageUrl": "https://example.com/activity-201.jpg",
+        "startTime": "2026-02-20 14:00:00",
+        "endTime": "2026-02-20 16:00:00",
+        "registrationStartTime": "2026-02-10 09:00:00",
+        "registrationEndTime": "2026-02-20 12:00:00",
+        "location": "综合楼 301",
+        "maxParticipants": 120,
+        "instructorId": 3005,
+        "instructorPhone": "13800000005",
+        "description": "活动创建示例数据。",
+        "status": "registering",
+        "publishStatus": "unpublished"
+    }
+}

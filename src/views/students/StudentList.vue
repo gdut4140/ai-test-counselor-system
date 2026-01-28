@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useStudentStore } from '../../stores/students'
 import type { StudentStatus } from '../../stores/students'
@@ -6,7 +7,6 @@ import PageHeader from '../../components/PageHeader.vue'
 import StatusBadge from '../../components/StatusBadge.vue'
 import {
     Search,
-    Filter,
     Download,
     RefreshCw,
     MoreHorizontal,
@@ -15,7 +15,56 @@ import {
 } from 'lucide-vue-next'
 
 const studentStore = useStudentStore()
-const { items: students, totalCount } = storeToRefs(studentStore)
+const { items: students, attendanceStats } = storeToRefs(studentStore)
+
+const selectedCollege = ref('all')
+const selectedMajor = ref('all')
+const selectedClass = ref('all')
+const selectedStatus = ref('all')
+const searchTerm = ref('')
+
+const collegeOptions = computed(() => Array.from(new Set(students.value.map(s => s.college))))
+const majorOptions = computed(() => {
+    const filtered = selectedCollege.value === 'all'
+        ? students.value
+        : students.value.filter(s => s.college === selectedCollege.value)
+    return Array.from(new Set(filtered.map(s => s.major)))
+})
+const classOptions = computed(() => {
+    const filtered = students.value.filter(s => {
+        if (selectedCollege.value !== 'all' && s.college !== selectedCollege.value) return false
+        if (selectedMajor.value !== 'all' && s.major !== selectedMajor.value) return false
+        return true
+    })
+    return Array.from(new Set(filtered.map(s => s.class)))
+})
+
+const filteredStudents = computed(() => {
+    return students.value.filter(student => {
+        if (selectedCollege.value !== 'all' && student.college !== selectedCollege.value) return false
+        if (selectedMajor.value !== 'all' && student.major !== selectedMajor.value) return false
+        if (selectedClass.value !== 'all' && student.class !== selectedClass.value) return false
+        if (selectedStatus.value !== 'all' && student.status !== selectedStatus.value) return false
+        if (searchTerm.value) {
+            const keyword = searchTerm.value.trim().toLowerCase()
+            const text = `${student.name}${student.studentNo}${student.class}${student.major}${student.college}`.toLowerCase()
+            if (!text.includes(keyword)) return false
+        }
+        return true
+    })
+})
+
+const filteredCount = computed(() => filteredStudents.value.length)
+
+watch(selectedClass, async (value) => {
+    if (value === 'all') {
+        attendanceStats.value = null
+        return
+    }
+    const target = students.value.find(s => s.class === value)
+    if (!target) return
+    await studentStore.fetchAttendanceStats(target.classId)
+})
 
 const statusLabelMap: Record<StudentStatus, string> = {
     active: '在校',
@@ -46,27 +95,57 @@ const getStudentStatusLabel = (status: StudentStatus) => statusLabelMap[status] 
         <!-- Filters & Search -->
         <div class="filter-bar card">
             <div class="filter-left">
-                <select class="select">
-                    <option>所有专业</option>
-                    <option>自动化</option>
-                    <option>机器人工程</option>
+                <select v-model="selectedCollege" class="select">
+                    <option value="all">所有学院</option>
+                    <option v-for="college in collegeOptions" :key="college" :value="college">{{ college }}</option>
                 </select>
-                <select class="select">
-                    <option>所有班级</option>
-                    <option>2301班</option>
-                    <option>2302班</option>
+                <select v-model="selectedMajor" class="select">
+                    <option value="all">所有专业</option>
+                    <option v-for="major in majorOptions" :key="major" :value="major">{{ major }}</option>
                 </select>
-                <select class="select">
-                    <option>状态</option>
-                    <option>在校</option>
-                    <option>请假</option>
+                <select v-model="selectedClass" class="select">
+                    <option value="all">所有班级</option>
+                    <option v-for="className in classOptions" :key="className" :value="className">{{ className }}
+                    </option>
+                </select>
+                <select v-model="selectedStatus" class="select">
+                    <option value="all">状态</option>
+                    <option value="active">在校</option>
+                    <option value="leave">请假</option>
+                    <option value="warning">预警</option>
                 </select>
             </div>
 
             <div class="filter-right">
                 <div class="search">
                     <Search class="icon icon-sm search-icon" />
-                    <input type="text" placeholder="搜索姓名、学号..." class="input input-search search-input" />
+                    <input v-model="searchTerm" type="text" placeholder="搜索姓名、学号、学院..."
+                        class="input input-search search-input" />
+                </div>
+            </div>
+        </div>
+
+        <div v-if="attendanceStats && selectedClass !== 'all'" class="attendance-card card">
+            <div class="attendance-header">
+                <div>
+                    <p class="attendance-label">考勤统计</p>
+                    <p class="attendance-class">{{ attendanceStats.className }}</p>
+                </div>
+                <div class="attendance-rate">
+                    <span class="attendance-rate-label">出勤率</span>
+                    <span class="attendance-rate-value">{{ attendanceStats.attendanceRate }}</span>
+                </div>
+            </div>
+            <div class="attendance-body">
+                <p class="attendance-subtitle">缺勤名单</p>
+                <div class="attendance-list">
+                    <div v-for="item in attendanceStats.absentList" :key="item.studentId" class="attendance-item">
+                        <div>
+                            <p class="attendance-name">{{ item.studentName }}</p>
+                            <p class="attendance-id">{{ item.studentIdNumber }}</p>
+                        </div>
+                        <span class="attendance-count">{{ item.absentCount }} 次</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -90,7 +169,7 @@ const getStudentStatusLabel = (status: StudentStatus) => statusLabelMap[status] 
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="student in students" :key="student.id" class="table-row">
+                        <tr v-for="student in filteredStudents" :key="student.id" class="table-row">
                             <td>
                                 <div class="table-cell">
                                     <div class="avatar avatar-muted">
@@ -104,7 +183,7 @@ const getStudentStatusLabel = (status: StudentStatus) => statusLabelMap[status] 
                             </td>
                             <td>
                                 <div class="table-primary">{{ student.class }}</div>
-                                <div class="table-secondary">{{ student.major }}</div>
+                                <div class="table-secondary">{{ student.major }} · {{ student.college }}</div>
                             </td>
                             <td>
                                 <div class="contact-list">
@@ -134,7 +213,7 @@ const getStudentStatusLabel = (status: StudentStatus) => statusLabelMap[status] 
             <!-- Pagination (Simple) -->
             <div class="table-footer">
                 <div class="pagination-text">
-                    共 {{ totalCount }} 名学生
+                    共 {{ filteredCount }} 名学生
                 </div>
                 <div class="pagination-nav">
                     <button disabled class="pagination-link is-disabled">上一页</button>
@@ -149,25 +228,30 @@ const getStudentStatusLabel = (status: StudentStatus) => statusLabelMap[status] 
 @use '@/assets/tokens' as *;
 
 .filter-bar {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 16px;
     padding: 16px;
 }
 
 .filter-left {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 12px;
-    flex-wrap: wrap;
+}
+
+.filter-left .select {
+    width: 100%;
 }
 
 .filter-right {
-    width: 100%;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .search {
     position: relative;
-    width: 100%;
+    width: min(320px, 100%);
 }
 
 .search-icon {
@@ -184,6 +268,92 @@ const getStudentStatusLabel = (status: StudentStatus) => statusLabelMap[status] 
 
 .table-card {
     overflow: hidden;
+}
+
+.attendance-card {
+    margin-top: 16px;
+    padding: 16px;
+}
+
+.attendance-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.attendance-label {
+    font-size: 12px;
+    color: $color-slate-500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.attendance-class {
+    font-size: 16px;
+    font-weight: 700;
+    color: $color-slate-900;
+}
+
+.attendance-rate {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.attendance-rate-label {
+    font-size: 12px;
+    color: $color-slate-500;
+}
+
+.attendance-rate-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: $color-primary;
+}
+
+.attendance-body {
+    margin-top: 16px;
+}
+
+.attendance-subtitle {
+    font-size: 13px;
+    font-weight: 600;
+    color: $color-slate-700;
+    margin-bottom: 12px;
+}
+
+.attendance-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.attendance-item {
+    padding: 12px;
+    border-radius: 12px;
+    background: $color-slate-50;
+    border: 1px solid $color-slate-100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.attendance-name {
+    font-weight: 600;
+    color: $color-slate-900;
+}
+
+.attendance-id {
+    font-size: 12px;
+    color: $color-slate-500;
+}
+
+.attendance-count {
+    font-size: 12px;
+    font-weight: 600;
+    color: $color-rose-600;
 }
 
 .table-scroll {
@@ -291,16 +461,14 @@ const getStudentStatusLabel = (status: StudentStatus) => statusLabelMap[status] 
     cursor: not-allowed;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
     .filter-bar {
-        flex-direction: row;
+        grid-template-columns: minmax(0, 1fr) auto;
         align-items: center;
-        justify-content: space-between;
     }
 
     .filter-right {
-        width: auto;
-        min-width: 240px;
+        justify-content: flex-end;
     }
 }
 </style>

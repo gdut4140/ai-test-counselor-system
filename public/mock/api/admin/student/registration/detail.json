@@ -1,0 +1,20 @@
+{
+    "code": 200,
+    "msg": "获取学生参与过的活动成功",
+    "data": [
+        {
+            "registrationId": 3001,
+            "activityId": 101,
+            "activityName": "新生适应指导会",
+            "activityType": "讲座",
+            "activityDescription": "面向新生的学习与生活适应指导。"
+        },
+        {
+            "registrationId": 3002,
+            "activityId": 103,
+            "activityName": "职业规划工作坊",
+            "activityType": "工作坊",
+            "activityDescription": "帮助学生明确职业方向与能力差距。"
+        }
+    ]
+}

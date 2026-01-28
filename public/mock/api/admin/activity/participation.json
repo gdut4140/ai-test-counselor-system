@@ -1,0 +1,26 @@
+{
+    "code": 200,
+    "msg": "获取活动参与情况成功",
+    "data": [
+        {
+            "participationId": 2001,
+            "activityId": 101,
+            "studentId": 2001,
+            "studentName": "张三",
+            "studentIdNumber": "20230101001",
+            "className": "计算机2301",
+            "checkInStatus": "已签到",
+            "checkOutStatus": "未签退"
+        },
+        {
+            "participationId": 2002,
+            "activityId": 101,
+            "studentId": 2002,
+            "studentName": "李四",
+            "studentIdNumber": "20230101002",
+            "className": "计算机2302",
+            "checkInStatus": "未签到",
+            "checkOutStatus": "未签退"
+        }
+    ]
+}

@@ -1,0 +1,54 @@
+{
+    "code": 200,
+    "msg": "获取学生列表成功",
+    "data": [
+        {
+            "id": 2001,
+            "studentName": "张三",
+            "studentIdNumber": "20230101001",
+            "className": "计算机2301",
+            "classId": 2301,
+            "major": "计算机科学与技术",
+            "college": "计算机学院",
+            "phone": "13800000011",
+            "email": "zhangsan@example.com",
+            "status": "active"
+        },
+        {
+            "id": 2002,
+            "studentName": "李四",
+            "studentIdNumber": "20230101002",
+            "className": "计算机2302",
+            "classId": 2302,
+            "major": "软件工程",
+            "college": "计算机学院",
+            "phone": "13800000012",
+            "email": "lisi@example.com",
+            "status": "warning"
+        },
+        {
+            "id": 2003,
+            "studentName": "王五",
+            "studentIdNumber": "20230101003",
+            "className": "自动化2301",
+            "classId": 3301,
+            "major": "自动化",
+            "college": "自动化学院",
+            "phone": "13800000013",
+            "email": "wangwu@example.com",
+            "status": "leave"
+        },
+        {
+            "id": 2004,
+            "studentName": "赵六",
+            "studentIdNumber": "20230101004",
+            "className": "机器人2301",
+            "classId": 3401,
+            "major": "机器人工程",
+            "college": "自动化学院",
+            "phone": "13800000014",
+            "email": "zhaoliu@example.com",
+            "status": "active"
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "code": 200,
+    "msg": "获取活动详细信息成功",
+    "data": {
+        "activityId": 101,
+        "activityName": "新生适应指导会",
+        "activityType": "讲座",
+        "imageUrl": "https://example.com/activity-101.jpg",
+        "startTime": "2026-02-02 14:00:00",
+        "endTime": "2026-02-02 16:00:00",
+        "registrationStartTime": "2026-01-28 09:00:00",
+        "registrationEndTime": "2026-02-02 12:00:00",
+        "location": "综合楼 201",
+        "maxParticipants": 200,
+        "currentParticipants": 80,
+        "instructorId": 3001,
+        "instructorPhone": "13800000001",
+        "description": "面向新生的学习与生活适应指导。",
+        "status": "registering",
+        "publishStatus": "published"
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "code": 200,
+    "msg": "获取学生缺勤记录成功",
+    "data": [
+        {
+            "absentId": 4001,
+            "courseId": 5001,
+            "courseName": "数据结构",
+            "absentTime": "2026-01-08 10:00:00"
+        },
+        {
+            "absentId": 4002,
+            "courseId": 5002,
+            "courseName": "操作系统",
+            "absentTime": "2026-01-12 08:00:00"
+        }
+    ]
+}

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useCourseStore } from '../../stores/courses'
-import type { Course } from '../../stores/courses'
 import PageHeader from '../../components/PageHeader.vue'
 import StatusBadge from '../../components/StatusBadge.vue'
 import {
@@ -10,16 +9,11 @@ import {
     MapPin,
     Clock,
     MoreHorizontal,
-    CalendarCheck,
-    BellRing
+    CalendarCheck
 } from 'lucide-vue-next'
 
 const courseStore = useCourseStore()
 const { courses } = storeToRefs(courseStore)
-const handleUrge = (courseName: Course['name']) => {
-    alert(`已向《${courseName}》缺课学生发送催促提醒！`)
-    // 实际开发中，这里会调用后端 API 发送通知
-}
 </script>
 
 <template>
@@ -99,11 +93,6 @@ const handleUrge = (courseName: Course['name']) => {
                     </div>
 
                     <div class="course-actions">
-                        <button v-if="parseInt(course.attendance) < 95" @click="handleUrge(course.name)"
-                            class="btn btn-outline btn-warn">
-                            <BellRing class="icon icon-xs" />
-                            一键催促
-                        </button>
                         <div class="course-stat">
                             <p class="course-stat-label">任课教师</p>
                             <p class="course-stat-value">{{ course.teacher }}</p>
