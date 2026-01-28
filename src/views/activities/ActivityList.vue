@@ -37,101 +37,329 @@ const filteredActivities = computed(() => {
 </script>
 
 <template>
-    <div class="space-y-6">
+    <div class="page activity-page">
         <!-- Page Header -->
         <PageHeader title="活动管理">
             <template #actions>
-                <button
-                    class="flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors shadow-sm shadow-primary-500/20">
-                    <Plus class="w-4 h-4 mr-2" />
+                <button class="btn btn--primary">
+                    <Plus class="icon icon--sm" />
                     发布活动
                 </button>
             </template>
         </PageHeader>
 
         <!-- Filters & Search -->
-        <div
-            class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row gap-4 items-center justify-between">
-            <div class="flex items-center bg-slate-100 rounded-lg p-1">
-                <button v-for="tab in tabsData" :key="tab.id" @click="setTab(tab.id)"
-                    class="px-4 py-1.5 text-sm font-medium rounded-md transition-all"
-                    :class="activeTab === tab.id ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'">
+        <div class="filter-bar card">
+            <div class="tabs">
+                <button v-for="tab in tabsData" :key="tab.id" @click="setTab(tab.id)" class="tab"
+                    :class="activeTab === tab.id ? 'tab--active' : ''">
                     {{ tab.name }}
-                    <span v-if="tab.count" class="ml-1 px-1.5 py-0.5 text-xs rounded-full bg-blue-100 text-blue-600">{{
+                    <span v-if="tab.count" class="tab__count">{{
                         tab.count }}</span>
                 </button>
             </div>
 
-            <div class="flex items-center gap-3 w-full sm:w-auto">
-                <div class="relative flex-1 sm:flex-initial">
-                    <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                    <input type="text" placeholder="搜索活动名称..."
-                        class="pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full sm:w-64 transition-all" />
+            <div class="filter-bar__right">
+                <div class="search">
+                    <Search class="icon icon--sm search__icon" />
+                    <input type="text" placeholder="搜索活动名称..." class="input input--search search__input" />
                 </div>
-                <button class="p-2 border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-50">
-                    <Filter class="w-4 h-4" />
+                <button class="btn btn--outline btn--icon">
+                    <Filter class="icon icon--sm" />
                 </button>
             </div>
         </div>
 
         <!-- Grid Layout for Activities -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div v-for="activity in filteredActivities" :key="activity.id"
-                class="group bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden flex flex-col">
+        <div class="activity-grid">
+            <div v-for="activity in filteredActivities" :key="activity.id" class="activity-card card card--hover">
                 <!-- Card Header / Cover Placeholder -->
-                <div class="h-32 w-full flex items-center justify-center relative overflow-hidden"
-                    :class="activity.cover">
-                    <Calendar class="w-12 h-12 opacity-50" />
-                    <div class="absolute top-3 right-3">
+                <div class="activity-card__cover" :class="activity.cover">
+                    <Calendar class="icon activity-card__cover-icon" />
+                    <div class="activity-card__badge">
                         <StatusBadge :status="activity.status" />
                     </div>
                 </div>
 
-                <div class="p-5 flex-1 flex flex-col">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-medium text-primary-600 bg-primary-50 px-2 py-0.5 rounded">{{
-                            activity.type }}</span>
+                <div class="activity-card__body">
+                    <div class="activity-card__meta">
+                        <span class="tag">{{ activity.type }}</span>
                     </div>
 
-                    <h3
-                        class="text-lg font-bold text-slate-900 mb-2 group-hover:text-primary-600 transition-colors line-clamp-1">
+                    <h3 class="activity-card__title">
                         {{ activity.title }}</h3>
 
-                    <div class="space-y-2 mb-4">
-                        <div class="flex items-center text-sm text-slate-500">
-                            <Calendar class="w-4 h-4 mr-2 text-slate-400" />
+                    <div class="activity-card__details">
+                        <div class="detail-row">
+                            <Calendar class="icon icon--sm detail-row__icon" />
                             {{ activity.startTime }}
                         </div>
-                        <div class="flex items-center text-sm text-slate-500">
-                            <MapPin class="w-4 h-4 mr-2 text-slate-400" />
+                        <div class="detail-row">
+                            <MapPin class="icon icon--sm detail-row__icon" />
                             {{ activity.location }}
                         </div>
                     </div>
 
-                    <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
-                        <div class="flex items-center text-sm text-slate-600">
-                            <Users class="w-4 h-4 mr-2" />
-                            <span class="font-medium">{{ activity.participants }}</span>
-                            <span class="text-slate-400 mx-1">/</span>
-                            <span class="text-slate-400">{{ activity.maxParticipants }}</span>
+                    <div class="activity-card__footer">
+                        <div class="participants">
+                            <Users class="icon icon--sm" />
+                            <span class="participants__count">{{ activity.participants }}</span>
+                            <span class="participants__divider">/</span>
+                            <span class="participants__max">{{ activity.maxParticipants }}</span>
                         </div>
-                        <button
-                            class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
-                            <MoreHorizontal class="w-5 h-5" />
+                        <button class="btn btn--ghost btn--icon">
+                            <MoreHorizontal class="icon" />
                         </button>
                     </div>
                 </div>
             </div>
 
             <!-- Add New Placeholder -->
-            <button
-                class="border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center p-6 text-slate-400 hover:border-primary-300 hover:text-primary-600 hover:bg-primary-50/50 transition-all min-h-[280px]">
-                <div
-                    class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mb-3 group-hover:bg-primary-100">
-                    <Plus class="w-6 h-6" />
+            <button class="activity-card activity-card--add">
+                <div class="activity-card__add-icon">
+                    <Plus class="icon" />
                 </div>
-                <span class="font-medium">发布新活动</span>
+                <span class="activity-card__add-text">发布新活动</span>
             </button>
         </div>
     </div>
 </template>
+
+<style scoped lang="scss">
+.filter-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+}
+
+.tabs {
+    display: flex;
+    align-items: center;
+    background: var(--color-slate-100);
+    padding: 6px;
+    border-radius: 12px;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.tab {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-slate-500);
+    cursor: pointer;
+    transition: background 200ms ease, color 200ms ease, box-shadow 200ms ease;
+}
+
+.tab--active {
+    background: var(--color-white);
+    color: var(--color-slate-900);
+    box-shadow: var(--shadow-sm);
+}
+
+.tab__count {
+    margin-left: 6px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: rgba(124, 58, 237, 0.15);
+    color: var(--color-primary);
+    font-size: 11px;
+}
+
+.filter-bar__right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.search {
+    position: relative;
+    flex: 1;
+}
+
+.search__icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-slate-400);
+}
+
+.search__input {
+    width: 100%;
+}
+
+.activity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.activity-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.activity-card__cover {
+    height: 128px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-bottom: 1px solid var(--color-slate-100);
+}
+
+.activity-card__cover-icon {
+    width: 48px;
+    height: 48px;
+    opacity: 0.5;
+}
+
+.activity-card__badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}
+
+.activity-card__body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+}
+
+.activity-card__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tag {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-primary);
+    background: rgba(124, 58, 237, 0.12);
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+.activity-card__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-slate-900);
+}
+
+.activity-card__details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--color-slate-500);
+    font-size: 13px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detail-row__icon {
+    color: var(--color-slate-400);
+}
+
+.activity-card__footer {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-slate-100);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.participants {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--color-slate-600);
+}
+
+.participants__count {
+    font-weight: 600;
+    color: var(--color-slate-900);
+}
+
+.participants__divider,
+.participants__max {
+    color: var(--color-slate-400);
+}
+
+.activity-card--add {
+    border: 2px dashed var(--color-slate-200);
+    background: transparent;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+    cursor: pointer;
+    transition: border-color 200ms ease, color 200ms ease, background 200ms ease;
+}
+
+.activity-card--add:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: rgba(124, 58, 237, 0.05);
+}
+
+.activity-card__add-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    background: var(--color-slate-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.activity-card__add-text {
+    font-weight: 600;
+}
+
+.cover--indigo {
+    background: #ede9fe;
+    color: #5b21b6;
+}
+
+.cover--blue {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.cover--emerald {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+@media (min-width: 640px) {
+    .filter-bar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .filter-bar__right {
+        width: auto;
+    }
+
+    .search {
+        width: 260px;
+    }
+}
+</style>

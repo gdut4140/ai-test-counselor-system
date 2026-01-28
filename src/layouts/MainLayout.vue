@@ -1,7 +1,6 @@
 <script setup>
 import {
     LayoutDashboard,
-    CalendarDays,
     Users,
     GraduationCap,
     Settings,
@@ -17,7 +16,6 @@ const route = useRoute()
 
 const navigation = [
     { name: '工作台', href: '/dashboard', icon: LayoutDashboard },
-    { name: '预约管理', href: '/appointments', icon: CalendarDays },
     { name: '活动管理', href: '/activities', icon: Users },
     { name: '学生管理', href: '/students', icon: GraduationCap },
     { name: '课程管理', href: '/courses', icon: BookOpen },
@@ -31,71 +29,61 @@ const handleLogout = () => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-slate-50">
+    <div class="layout">
         <!-- Sidebar -->
-        <aside
-            class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 transition-transform duration-300 ease-in-out">
+        <aside class="layout__sidebar">
             <!-- Logo -->
-            <div class="flex items-center h-16 px-6 border-b border-slate-100">
-                <div class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center mr-3">
-                    <GraduationCap class="w-5 h-5 text-white" />
+            <div class="layout__logo">
+                <div class="layout__logo-icon">
+                    <GraduationCap class="icon icon--sm" />
                 </div>
-                <span class="text-lg font-bold text-slate-900 tracking-tight">辅导员空间</span>
+                <span class="layout__logo-text">辅导员空间</span>
             </div>
 
             <!-- Nav -->
-            <nav class="p-4 space-y-1">
-                <router-link v-for="item in navigation" :key="item.name" :to="item.href"
-                    class="flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 group"
-                    :class="[
-                        route.path.startsWith(item.href)
-                            ? 'bg-primary-50 text-primary-700'
-                            : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                    ]">
-                    <component :is="item.icon" class="w-5 h-5 mr-3 transition-colors"
-                        :class="route.path.startsWith(item.href) ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600'" />
+            <nav class="layout__nav">
+                <router-link v-for="item in navigation" :key="item.name" :to="item.href" class="layout__nav-link"
+                    :class="route.path.startsWith(item.href) ? 'layout__nav-link--active' : ''">
+                    <component :is="item.icon" class="icon layout__nav-icon"
+                        :class="route.path.startsWith(item.href) ? 'layout__nav-icon--active' : ''" />
                     {{ item.name }}
                 </router-link>
             </nav>
 
             <!-- Bottom Actions -->
-            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-100">
-                <button @click="handleLogout"
-                    class="flex items-center w-full px-4 py-3 text-sm font-medium text-slate-600 rounded-xl hover:bg-rose-50 hover:text-rose-700 transition-colors">
-                    <LogOut class="w-5 h-5 mr-3" />
+            <div class="layout__sidebar-footer">
+                <button @click="handleLogout" class="layout__logout">
+                    <LogOut class="icon" />
                     退出登录
                 </button>
             </div>
         </aside>
 
         <!-- Header -->
-        <header
-            class="fixed top-0 left-64 right-0 h-16 bg-white/80 backdrop-blur-md border-b border-slate-200 z-40 flex items-center justify-between px-8">
+        <header class="layout__header">
             <!-- Page Title / Breadcrumb (Simplified) -->
-            <h1 class="text-xl font-semibold text-slate-800">
+            <h1 class="layout__title">
                 {{navigation.find(i => route.path.startsWith(i.href))?.name || 'Dashboard'}}
             </h1>
 
             <!-- Right Actions -->
-            <div class="flex items-center gap-4">
-                <div class="relative hidden md:block">
-                    <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                    <input type="text" placeholder="全站搜索..."
-                        class="pl-10 pr-4 py-2 bg-slate-100 border-none rounded-full text-sm focus:ring-2 focus:ring-primary-500 w-64 transition-all" />
+            <div class="layout__actions">
+                <div class="layout__search">
+                    <Search class="icon icon--sm layout__search-icon" />
+                    <input type="text" placeholder="全站搜索..." class="input input--search layout__search-input" />
                 </div>
 
-                <button class="relative p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
-                    <Bell class="w-5 h-5" />
-                    <span class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-white"></span>
+                <button class="btn btn--ghost btn--icon layout__notification">
+                    <Bell class="icon" />
+                    <span class="layout__notification-dot"></span>
                 </button>
 
-                <div class="flex items-center gap-3 pl-4 border-l border-slate-200">
-                    <div class="text-right hidden sm:block">
-                        <p class="text-sm font-medium text-slate-900">王老师</p>
-                        <p class="text-xs text-slate-500">辅导员</p>
+                <div class="layout__profile">
+                    <div class="layout__profile-text">
+                        <p class="layout__profile-name">王老师</p>
+                        <p class="layout__profile-role">辅导员</p>
                     </div>
-                    <div
-                        class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold border-2 border-white shadow-sm">
+                    <div class="layout__avatar">
                         王
                     </div>
                 </div>
@@ -103,8 +91,8 @@ const handleLogout = () => {
         </header>
 
         <!-- Main Content -->
-        <main class="ml-64 pt-20 p-8">
-            <div class="max-w-7xl mx-auto">
+        <main class="layout__main">
+            <div class="layout__content">
                 <router-view v-slot="{ Component }">
                     <transition name="fade" mode="out-in">
                         <component :is="Component" />
@@ -115,7 +103,224 @@ const handleLogout = () => {
     </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.layout {
+    min-height: 100vh;
+    background: var(--color-background);
+}
+
+.layout__sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 256px;
+    background: var(--color-white);
+    border-right: 1px solid var(--color-slate-200);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+}
+
+.layout__logo {
+    display: flex;
+    align-items: center;
+    height: 64px;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--color-slate-100);
+    gap: 12px;
+}
+
+.layout__logo-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: var(--color-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-white);
+}
+
+.layout__logo-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-slate-900);
+}
+
+.layout__nav {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.layout__nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-slate-600);
+    transition: background 200ms ease, color 200ms ease;
+}
+
+.layout__nav-link:hover {
+    background: var(--color-slate-100);
+    color: var(--color-slate-900);
+}
+
+.layout__nav-link--active {
+    background: rgba(124, 58, 237, 0.12);
+    color: var(--color-primary);
+}
+
+.layout__nav-icon {
+    color: var(--color-slate-400);
+    transition: color 200ms ease;
+}
+
+.layout__nav-icon--active {
+    color: var(--color-primary);
+}
+
+.layout__sidebar-footer {
+    padding: 16px;
+    border-top: 1px solid var(--color-slate-100);
+}
+
+.layout__logout {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: none;
+    background: transparent;
+    color: var(--color-slate-600);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 200ms ease, color 200ms ease;
+}
+
+.layout__logout:hover {
+    background: #ffe4e6;
+    color: #be123c;
+}
+
+.layout__header {
+    position: fixed;
+    top: 0;
+    left: 256px;
+    right: 0;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-slate-200);
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+}
+
+.layout__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-slate-800);
+}
+
+.layout__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.layout__search {
+    position: relative;
+    display: none;
+}
+
+.layout__search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-slate-400);
+}
+
+.layout__search-input {
+    width: 240px;
+    background: var(--color-slate-100);
+    border: none;
+    border-radius: 999px;
+}
+
+.layout__notification {
+    position: relative;
+}
+
+.layout__notification-dot {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    background: #f43f5e;
+    border-radius: 999px;
+    border: 2px solid var(--color-white);
+}
+
+.layout__profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-left: 16px;
+    border-left: 1px solid var(--color-slate-200);
+}
+
+.layout__profile-text {
+    display: none;
+    text-align: right;
+}
+
+.layout__profile-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-slate-900);
+}
+
+.layout__profile-role {
+    font-size: 12px;
+    color: var(--color-slate-500);
+}
+
+.layout__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: rgba(124, 58, 237, 0.16);
+    color: var(--color-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    border: 2px solid var(--color-white);
+    box-shadow: var(--shadow-sm);
+}
+
+.layout__main {
+    margin-left: 256px;
+    padding: 96px 32px 32px;
+}
+
+.layout__content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity 0.2s ease;
@@ -124,5 +329,17 @@ const handleLogout = () => {
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;
+}
+
+@media (min-width: 768px) {
+    .layout__search {
+        display: block;
+    }
+}
+
+@media (min-width: 640px) {
+    .layout__profile-text {
+        display: block;
+    }
 }
 </style>

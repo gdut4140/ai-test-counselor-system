@@ -17,113 +17,107 @@ import {
 const courseStore = useCourseStore()
 const { courses } = storeToRefs(courseStore)
 const handleUrge = (courseName) => {
-    alert(`📢 已向《${courseName}》缺课学生发送催促提醒！`);
+    alert(`已向《${courseName}》缺课学生发送催促提醒！`)
     // 实际开发中，这里会调用后端 API 发送通知
 }
 </script>
 
 <template>
-    <div class="space-y-6">
+    <div class="page course-page">
         <!-- Page Header -->
         <PageHeader title="课程管理">
             <template #actions>
-                <button
-                    class="flex items-center px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
-                    <CalendarCheck class="w-4 h-4 mr-2" />
+                <button class="btn btn--outline">
+                    <CalendarCheck class="icon icon--sm" />
                     考勤统计
                 </button>
             </template>
         </PageHeader>
 
         <!-- Stats Overview -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-                <div class="p-3 bg-indigo-50 rounded-lg text-indigo-600">
-                    <BookOpen class="w-6 h-6" />
+        <div class="summary-grid">
+            <div class="summary-card card">
+                <div class="summary-card__icon summary-card__icon--indigo">
+                    <BookOpen class="icon" />
                 </div>
                 <div>
-                    <p class="text-xs text-slate-500 font-medium uppercase">本学期课程</p>
-                    <p class="text-2xl font-bold text-slate-900">12 <span
-                            class="text-sm font-normal text-slate-400">门</span>
+                    <p class="summary-card__label">本学期课程</p>
+                    <p class="summary-card__value">12 <span class="summary-card__unit">门</span>
                     </p>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-                <div class="p-3 bg-emerald-50 rounded-lg text-emerald-600">
-                    <CalendarCheck class="w-6 h-6" />
+            <div class="summary-card card">
+                <div class="summary-card__icon summary-card__icon--emerald">
+                    <CalendarCheck class="icon" />
                 </div>
                 <div>
-                    <p class="text-xs text-slate-500 font-medium uppercase">平均出勤率</p>
-                    <p class="text-2xl font-bold text-slate-900">96.5%</p>
+                    <p class="summary-card__label">平均出勤率</p>
+                    <p class="summary-card__value">96.5%</p>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-                <div class="p-3 bg-amber-50 rounded-lg text-amber-600">
-                    <MapPin class="w-6 h-6" />
+            <div class="summary-card card">
+                <div class="summary-card__icon summary-card__icon--amber">
+                    <MapPin class="icon" />
                 </div>
                 <div>
-                    <p class="text-xs text-slate-500 font-medium uppercase">今日课程</p>
-                    <p class="text-2xl font-bold text-slate-900">3 <span
-                            class="text-sm font-normal text-slate-400">节</span></p>
+                    <p class="summary-card__label">今日课程</p>
+                    <p class="summary-card__value">3 <span class="summary-card__unit">节</span></p>
                 </div>
             </div>
         </div>
 
         <!-- Course List -->
-        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-            <div class="p-4 border-b border-slate-200 flex items-center justify-between">
-                <h3 class="font-bold text-slate-900">课程列表</h3>
-                <div class="relative">
-                    <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                    <input type="text" placeholder="搜索课程..."
-                        class="pl-9 pr-4 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 w-48 transition-all" />
+        <div class="course-list card">
+            <div class="course-list__header">
+                <h3 class="course-list__title">课程列表</h3>
+                <div class="search">
+                    <Search class="icon icon--sm search__icon" />
+                    <input type="text" placeholder="搜索课程..." class="input input--search search__input" />
                 </div>
             </div>
-            <div class="divide-y divide-slate-100">
-                <div v-for="course in courses" :key="course.id"
-                    class="p-4 hover:bg-slate-50 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div class="flex items-start gap-4">
-                        <div
-                            class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-lg shrink-0">
+            <div class="course-list__body">
+                <div v-for="course in courses" :key="course.id" class="course-row">
+                    <div class="course-row__info">
+                        <div class="course-row__icon">
                             {{ course.name.charAt(0) }}
                         </div>
                         <div>
-                            <div class="flex items-center gap-2">
-                                <h4 class="font-bold text-slate-900">{{ course.name }}</h4>
-                                <span class="text-xs font-normal text-slate-400">{{ course.code }}</span>
+                            <div class="course-row__title">
+                                <h4>{{ course.name }}</h4>
+                                <span class="course-row__code">{{ course.code }}</span>
                                 <StatusBadge :status="course.status" />
                             </div>
-                            <div class="flex flex-wrap items-center gap-4 mt-1">
-                                <span class="text-sm text-slate-500 flex items-center">
-                                    <Clock class="w-3.5 h-3.5 mr-1.5" /> {{ course.time }}
+                            <div class="course-row__meta">
+                                <span class="course-row__meta-item">
+                                    <Clock class="icon icon--xs" /> {{ course.time }}
                                 </span>
-                                <span class="text-sm text-slate-500 flex items-center">
-                                    <MapPin class="w-3.5 h-3.5 mr-1.5" /> {{ course.location }}
+                                <span class="course-row__meta-item">
+                                    <MapPin class="icon icon--xs" /> {{ course.location }}
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-6 sm:pl-4 sm:border-l sm:border-slate-100">
+                    <div class="course-row__actions">
                         <button v-if="parseInt(course.attendance) < 95" @click="handleUrge(course.name)"
-                            class="flex items-center px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-medium hover:bg-rose-100 transition-all border border-rose-200 animate-pulse">
-                            <BellRing class="w-3.5 h-3.5 mr-1" />
+                            class="btn btn--outline btn--warn">
+                            <BellRing class="icon icon--xs" />
                             一键催促
                         </button>
-                        <div class="text-center">
-                            <p class="text-xs text-slate-400 mb-0.5">任课教师</p>
-                            <p class="text-sm font-medium text-slate-700">{{ course.teacher }}</p>
+                        <div class="course-row__stat">
+                            <p class="course-row__stat-label">任课教师</p>
+                            <p class="course-row__stat-value">{{ course.teacher }}</p>
                         </div>
 
-                        <div class="text-center">
-                            <p class="text-xs text-slate-400 mb-0.5">出勤率</p>
-                            <p class="text-sm font-bold"
-                                :class="parseInt(course.attendance) < 95 ? 'text-amber-600' : 'text-emerald-600'">{{
+                        <div class="course-row__stat">
+                            <p class="course-row__stat-label">出勤率</p>
+                            <p class="course-row__stat-value"
+                                :class="parseInt(course.attendance) < 95 ? 'course-row__stat-value--warning' : 'course-row__stat-value--success'">
+                                {{
                                     course.attendance }}</p>
                         </div>
-                        <button
-                            class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors ml-2">
-                            <MoreHorizontal class="w-5 h-5" />
+                        <button class="btn btn--ghost btn--icon">
+                            <MoreHorizontal class="icon" />
                         </button>
                     </div>
                 </div>
@@ -131,3 +125,236 @@ const handleUrge = (courseName) => {
         </div>
     </div>
 </template>
+
+<style scoped lang="scss">
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.summary-card {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.summary-card__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.summary-card__icon--indigo {
+    background: #ede9fe;
+    color: #5b21b6;
+}
+
+.summary-card__icon--emerald {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.summary-card__icon--amber {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.summary-card__label {
+    font-size: 11px;
+    color: var(--color-slate-500);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.summary-card__value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-slate-900);
+}
+
+.summary-card__unit {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--color-slate-400);
+}
+
+.course-list {
+    overflow: hidden;
+}
+
+.course-list__header {
+    padding: 16px;
+    border-bottom: 1px solid var(--color-slate-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.course-list__title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.search {
+    position: relative;
+    width: 200px;
+}
+
+.search__icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-slate-400);
+}
+
+.search__input {
+    width: 100%;
+    background: var(--color-slate-100);
+}
+
+.course-list__body {
+    display: flex;
+    flex-direction: column;
+}
+
+.course-row {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: background 200ms ease;
+}
+
+.course-row:hover {
+    background: #f8fafc;
+}
+
+.course-row__info {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.course-row__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #ede9fe;
+    color: #5b21b6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.course-row__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.course-row__title h4 {
+    margin: 0;
+    font-weight: 700;
+    color: var(--color-slate-900);
+}
+
+.course-row__code {
+    font-size: 12px;
+    color: var(--color-slate-400);
+}
+
+.course-row__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 6px;
+    color: var(--color-slate-500);
+    font-size: 13px;
+}
+
+.course-row__meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.course-row__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.btn--warn {
+    border-color: #fecdd3;
+    color: #e11d48;
+    background: #fff1f2;
+    animation: pulse 1.6s ease-in-out infinite;
+}
+
+.btn--warn:hover {
+    background: #ffe4e6;
+}
+
+.course-row__stat {
+    text-align: center;
+}
+
+.course-row__stat-label {
+    font-size: 11px;
+    color: var(--color-slate-400);
+}
+
+.course-row__stat-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-slate-700);
+}
+
+.course-row__stat-value--warning {
+    color: #d97706;
+}
+
+.course-row__stat-value--success {
+    color: #16a34a;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.3);
+    }
+
+    70% {
+        box-shadow: 0 0 0 8px rgba(225, 29, 72, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(225, 29, 72, 0);
+    }
+}
+
+@media (min-width: 640px) {
+    .course-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .course-row__actions {
+        border-left: 1px solid var(--color-slate-100);
+        padding-left: 16px;
+    }
+}
+</style>

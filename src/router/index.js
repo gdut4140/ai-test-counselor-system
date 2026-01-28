@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '../layouts/MainLayout.vue'
 import Login from '../views/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
-import AppointmentList from '../views/appointments/AppointmentList.vue'
 import ActivityList from '../views/activities/ActivityList.vue'
 import StudentList from '../views/students/StudentList.vue'
 import CourseList from '../views/courses/CourseList.vue'
@@ -25,11 +24,6 @@ const router = createRouter({
           path: 'dashboard',
           name: 'dashboard',
           component: Dashboard
-        },
-        {
-          path: 'appointments',
-          name: 'appointments',
-          component: AppointmentList
         },
         {
           path: 'activities',

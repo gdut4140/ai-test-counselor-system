@@ -3,14 +3,32 @@ import { ref } from 'vue'
 
 export const useSettingsStore = defineStore('settings', () => {
     // State
-    const notificationSettings = ref([
-        { id: 1, label: '新的预约申请', email: true, push: true, sms: false },
-        { id: 2, label: '活动报名提醒', email: true, push: true, sms: false },
-        { id: 3, label: '学生异常考勤预警', email: true, push: true, sms: true },
-        { id: 4, label: '系统公告', email: false, push: true, sms: false },
-    ])
+    const notificationSettings = ref([])
+    const isLoading = ref(false)
+    const error = ref(null)
+    let initialized = false
 
     // Actions
+    async function fetchSettings() {
+        isLoading.value = true
+        error.value = null
+        try {
+            const response = await fetch('/mock/settings.json')
+            if (!response.ok) throw new Error('Failed to load settings')
+            notificationSettings.value = await response.json()
+        } catch (err) {
+            error.value = err
+        } finally {
+            isLoading.value = false
+        }
+    }
+
+    function init() {
+        if (initialized) return
+        initialized = true
+        fetchSettings()
+    }
+
     function updateNotificationSetting(id, type, value) {
         const setting = notificationSettings.value.find(s => s.id === id)
         if (setting) {
@@ -18,8 +36,14 @@ export const useSettingsStore = defineStore('settings', () => {
         }
     }
 
+    init()
+
     return {
         notificationSettings,
+        isLoading,
+        error,
+        fetchSettings,
+        init,
         updateNotificationSetting
     }
 })

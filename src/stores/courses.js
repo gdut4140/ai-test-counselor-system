@@ -3,17 +3,35 @@ import { ref, computed } from 'vue'
 
 export const useCourseStore = defineStore('courses', () => {
     // State
-    const courses = ref([
-        { id: 1, name: '高等数学 (下)', code: 'MATH1002', teacher: '李教授', time: '周一 1-2节', location: '教一 201', attendance: '98%', status: 'ongoing' },
-        { id: 2, name: '线性代数', code: 'MATH1005', teacher: '王副教授', time: '周二 3-4节', location: '教二 105', attendance: '95%', status: 'ongoing' },
-        { id: 3, name: '大学物理 (上)', code: 'PHYS1001', teacher: '赵讲师', time: '周三 5-6节', location: '实验楼 302', attendance: '92%', status: 'warning' },
-        { id: 4, name: '程序设计基础', code: 'CS1001', teacher: '孙教授', time: '周四 7-8节', location: '机房 A', attendance: '99%', status: 'ongoing' },
-    ])
+    const courses = ref([])
+    const isLoading = ref(false)
+    const error = ref(null)
+    let initialized = false
 
     // Getters
     const ongoingCourses = computed(() => courses.value.filter(c => c.status === 'ongoing'))
 
     // Actions
+    async function fetchCourses() {
+        isLoading.value = true
+        error.value = null
+        try {
+            const response = await fetch('/mock/courses.json')
+            if (!response.ok) throw new Error('Failed to load courses')
+            courses.value = await response.json()
+        } catch (err) {
+            error.value = err
+        } finally {
+            isLoading.value = false
+        }
+    }
+
+    function init() {
+        if (initialized) return
+        initialized = true
+        fetchCourses()
+    }
+
     function addCourse(course) {
         courses.value.push({
             id: Date.now(),
@@ -23,9 +41,15 @@ export const useCourseStore = defineStore('courses', () => {
         })
     }
 
+    init()
+
     return {
         courses,
+        isLoading,
+        error,
         ongoingCourses,
+        fetchCourses,
+        init,
         addCourse
     }
 })

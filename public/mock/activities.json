@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "title": "2026春季校园歌手大赛",
+        "type": "文体活动",
+        "startTime": "2026-03-15 18:00",
+        "endTime": "2026-03-15 21:00",
+        "location": "学生活动中心大礼堂",
+        "participants": 45,
+        "maxParticipants": 100,
+        "status": "registering",
+        "cover": "cover--indigo"
+    },
+    {
+        "id": 2,
+        "title": "创新创业讲座：AI时代的机遇",
+        "type": "学术讲座",
+        "startTime": "2026-02-10 14:00",
+        "endTime": "2026-02-10 16:00",
+        "location": "图书馆报告厅",
+        "participants": 120,
+        "maxParticipants": 200,
+        "status": "registering",
+        "cover": "cover--blue"
+    },
+    {
+        "id": 3,
+        "title": "诚信考试动员大会",
+        "type": "班级会议",
+        "startTime": "2026-01-20 10:00",
+        "endTime": "2026-01-20 11:30",
+        "location": "教三楼 305",
+        "participants": 58,
+        "maxParticipants": 60,
+        "status": "ended",
+        "cover": "cover--emerald"
+    }
+]

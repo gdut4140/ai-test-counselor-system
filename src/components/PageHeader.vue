@@ -12,12 +12,12 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="page-header">
         <div>
-            <h2 class="text-2xl font-bold text-slate-900">{{ title }}</h2>
-            <p v-if="subtitle" class="mt-1 text-slate-500">{{ subtitle }}</p>
+            <h2 class="page-header__title">{{ title }}</h2>
+            <p v-if="subtitle" class="page-header__subtitle">{{ subtitle }}</p>
         </div>
-        <div v-if="$slots.actions" class="flex items-center gap-3">
+        <div v-if="$slots.actions" class="page-header__actions">
             <slot name="actions" />
         </div>
     </div>
