@@ -9,7 +9,7 @@
         "participants": 45,
         "maxParticipants": 100,
         "status": "registering",
-        "cover": "cover--indigo"
+        "cover": "cover-indigo"
     },
     {
         "id": 2,
@@ -21,7 +21,7 @@
         "participants": 120,
         "maxParticipants": 200,
         "status": "registering",
-        "cover": "cover--blue"
+        "cover": "cover-blue"
     },
     {
         "id": 3,
@@ -33,6 +33,6 @@
         "participants": 58,
         "maxParticipants": 60,
         "status": "ended",
-        "cover": "cover--emerald"
+        "cover": "cover-emerald"
     }
 ]

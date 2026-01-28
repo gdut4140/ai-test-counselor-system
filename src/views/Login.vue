@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { GraduationCap, ArrowRight } from 'lucide-vue-next'
@@ -17,17 +17,17 @@ const handleLogin = () => {
 
 <template>
     <div class="login">
-        <div class="login__container">
-            <div class="login__brand">
-                <div class="login__logo">
+        <div class="login-container">
+            <div class="login-brand">
+                <div class="login-logo">
                     <GraduationCap class="icon" />
                 </div>
-                <h2 class="login__title">辅导员管理系统</h2>
-                <p class="login__subtitle">高效 · 简约 · 智能</p>
+                <h2 class="login-title">辅导员管理系统</h2>
+                <p class="login-subtitle">高效 · 简约 · 智能</p>
             </div>
 
-            <div class="login__card">
-                <form class="login__form" @submit.prevent="handleLogin">
+            <div class="login-card">
+                <form class="login-form" @submit.prevent="handleLogin">
                     <div class="form-field">
                         <label for="email" class="form-label">工号 / 账号</label>
                         <input id="email" name="email" type="text" autocomplete="email" required class="input"
@@ -40,11 +40,11 @@ const handleLogin = () => {
                             class="input" value="password" />
                     </div>
 
-                    <div>
-                        <button type="submit" class="btn btn--primary btn--wide" :disabled="isLoading">
-                            <span v-if="!isLoading" class="login__button-content">
+                    <div class="login-actions">
+                        <button type="submit" class="btn btn-primary login-submit" :disabled="isLoading">
+                            <span v-if="!isLoading" class="login-button">
                                 登录系统
-                                <ArrowRight class="icon icon--sm login__button-icon" />
+                                <ArrowRight class="icon icon-sm login-icon" />
                             </span>
                             <span v-else>登录中...</span>
                         </button>
@@ -56,91 +56,108 @@ const handleLogin = () => {
 </template>
 
 <style scoped lang="scss">
+@use '@/assets/tokens' as *;
+
 .login {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 48px 16px;
-    background: var(--color-background);
-}
+    background: $color-background;
 
-.login__container {
-    width: 100%;
-    max-width: 420px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
+    .login-container {
+        width: 100%;
+        max-width: 420px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
 
-.login__brand {
-    text-align: center;
-}
+    .login-brand {
+        text-align: center;
 
-.login__logo {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto;
-    border-radius: 18px;
-    background: var(--color-primary);
-    color: var(--color-white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 12px 24px rgba(124, 58, 237, 0.25);
-    transform: rotate(-6deg);
-}
+        .login-logo {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto;
+            border-radius: 18px;
+            background: $color-primary;
+            color: $color-white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 24px rgba(124, 58, 237, 0.25);
+            transform: rotate(-6deg);
+        }
 
-.login__title {
-    margin-top: 20px;
-    font-size: 28px;
-    font-weight: 700;
-}
+        .login-title {
+            margin-top: 20px;
+            font-size: 28px;
+            font-weight: 700;
+        }
 
-.login__subtitle {
-    margin-top: 8px;
-    font-size: 14px;
-    color: var(--color-slate-600);
-}
+        .login-subtitle {
+            margin-top: 8px;
+            font-size: 14px;
+            color: $color-slate-600;
+        }
+    }
 
-.login__card {
-    background: var(--color-white);
-    border-radius: 20px;
-    padding: 32px 24px;
-    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
-    border: 1px solid var(--color-slate-100);
-}
+    .login-card {
+        background: $color-white;
+        border-radius: 20px;
+        padding: 32px 24px;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+        border: 1px solid $color-slate-100;
+    }
 
-.login__form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 
-.form-field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
+    .login-actions {
+        display: flex;
+        justify-content: center;
+    }
 
-.form-label {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--color-slate-700);
-}
+    .form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
 
-.login__button-content {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
+    .form-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: $color-slate-700;
+    }
 
-.login__button-icon {
-    opacity: 0.7;
-    transition: opacity 200ms ease;
-}
+    .login-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-.btn--primary:hover .login__button-icon {
-    opacity: 1;
+    .login-icon {
+        opacity: 0.7;
+        transition: opacity 200ms ease;
+    }
+
+    .btn-primary:hover .login-icon {
+        opacity: 1;
+    }
+
+    .login-submit {
+        min-width: 220px;
+        background: $color-primary;
+        box-shadow: 0 12px 24px rgba(124, 58, 237, 0.25);
+
+        &:hover {
+            background: #6d28d9;
+        }
+    }
 }
 </style>

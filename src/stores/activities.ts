@@ -1,31 +1,41 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
+export type ActivityStatus = 'registering' | 'ongoing' | 'ended'
+
+export interface Activity {
+    id: number
+    title: string
+    type: string
+    status: ActivityStatus
+    startTime: string
+    location: string
+    participants: number
+    maxParticipants: number
+    cover?: string
+}
+
 export const useActivityStore = defineStore('activities', () => {
-    // State
-    const items = ref([])
+    const items = ref<Activity[]>([])
     const isLoading = ref(false)
-    const error = ref(null)
+    const error = ref<Error | null>(null)
     let initialized = false
 
-    // Getters
     const todayActivitiesCount = computed(() => {
-        // Mock logic: simply return a fixed number or filter by date date string matching today in real app
         return 3
     })
 
     const registeringCount = computed(() => items.value.filter(i => i.status === 'registering').length)
 
-    // Actions
     async function fetchActivities() {
         isLoading.value = true
         error.value = null
         try {
             const response = await fetch('/mock/activities.json')
             if (!response.ok) throw new Error('Failed to load activities')
-            items.value = await response.json()
+            items.value = (await response.json()) as Activity[]
         } catch (err) {
-            error.value = err
+            error.value = err instanceof Error ? err : new Error('Failed to load activities')
         } finally {
             isLoading.value = false
         }
@@ -37,7 +47,7 @@ export const useActivityStore = defineStore('activities', () => {
         fetchActivities()
     }
 
-    function addActivity(activity) {
+    function addActivity(activity: Activity) {
         items.value.unshift(activity)
     }
 

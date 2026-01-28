@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "label": "活动报名提醒",
+        "email": true,
+        "push": true,
+        "sms": false
+    },
+    {
+        "id": 2,
+        "label": "学生异常考勤预警",
+        "email": true,
+        "push": true,
+        "sms": true
+    },
+    {
+        "id": 3,
+        "label": "系统公告",
+        "email": false,
+        "push": true,
+        "sms": false
+    }
+]

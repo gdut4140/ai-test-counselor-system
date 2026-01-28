@@ -1,7 +1,7 @@
-<script setup>
-import { ref } from 'vue'
+<script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useCourseStore } from '../../stores/courses'
+import type { Course } from '../../stores/courses'
 import PageHeader from '../../components/PageHeader.vue'
 import StatusBadge from '../../components/StatusBadge.vue'
 import {
@@ -16,7 +16,7 @@ import {
 
 const courseStore = useCourseStore()
 const { courses } = storeToRefs(courseStore)
-const handleUrge = (courseName) => {
+const handleUrge = (courseName: Course['name']) => {
     alert(`已向《${courseName}》缺课学生发送催促提醒！`)
     // 实际开发中，这里会调用后端 API 发送通知
 }
@@ -27,8 +27,8 @@ const handleUrge = (courseName) => {
         <!-- Page Header -->
         <PageHeader title="课程管理">
             <template #actions>
-                <button class="btn btn--outline">
-                    <CalendarCheck class="icon icon--sm" />
+                <button class="btn btn-outline">
+                    <CalendarCheck class="icon icon-sm" />
                     考勤统计
                 </button>
             </template>
@@ -37,86 +37,86 @@ const handleUrge = (courseName) => {
         <!-- Stats Overview -->
         <div class="summary-grid">
             <div class="summary-card card">
-                <div class="summary-card__icon summary-card__icon--indigo">
+                <div class="summary-icon indigo">
                     <BookOpen class="icon" />
                 </div>
                 <div>
-                    <p class="summary-card__label">本学期课程</p>
-                    <p class="summary-card__value">12 <span class="summary-card__unit">门</span>
+                    <p class="summary-label">本学期课程</p>
+                    <p class="summary-value">12 <span class="summary-unit">门</span>
                     </p>
                 </div>
             </div>
             <div class="summary-card card">
-                <div class="summary-card__icon summary-card__icon--emerald">
+                <div class="summary-icon emerald">
                     <CalendarCheck class="icon" />
                 </div>
                 <div>
-                    <p class="summary-card__label">平均出勤率</p>
-                    <p class="summary-card__value">96.5%</p>
+                    <p class="summary-label">平均出勤率</p>
+                    <p class="summary-value">96.5%</p>
                 </div>
             </div>
             <div class="summary-card card">
-                <div class="summary-card__icon summary-card__icon--amber">
+                <div class="summary-icon amber">
                     <MapPin class="icon" />
                 </div>
                 <div>
-                    <p class="summary-card__label">今日课程</p>
-                    <p class="summary-card__value">3 <span class="summary-card__unit">节</span></p>
+                    <p class="summary-label">今日课程</p>
+                    <p class="summary-value">3 <span class="summary-unit">节</span></p>
                 </div>
             </div>
         </div>
 
         <!-- Course List -->
         <div class="course-list card">
-            <div class="course-list__header">
-                <h3 class="course-list__title">课程列表</h3>
+            <div class="course-header">
+                <h3 class="course-title">课程列表</h3>
                 <div class="search">
-                    <Search class="icon icon--sm search__icon" />
-                    <input type="text" placeholder="搜索课程..." class="input input--search search__input" />
+                    <Search class="icon icon-sm search-icon" />
+                    <input type="text" placeholder="搜索课程..." class="input input-search search-input" />
                 </div>
             </div>
-            <div class="course-list__body">
+            <div class="course-body">
                 <div v-for="course in courses" :key="course.id" class="course-row">
-                    <div class="course-row__info">
-                        <div class="course-row__icon">
+                    <div class="course-info">
+                        <div class="course-icon">
                             {{ course.name.charAt(0) }}
                         </div>
                         <div>
-                            <div class="course-row__title">
+                            <div class="course-title-row">
                                 <h4>{{ course.name }}</h4>
-                                <span class="course-row__code">{{ course.code }}</span>
+                                <span class="course-code">{{ course.code }}</span>
                                 <StatusBadge :status="course.status" />
                             </div>
-                            <div class="course-row__meta">
-                                <span class="course-row__meta-item">
-                                    <Clock class="icon icon--xs" /> {{ course.time }}
+                            <div class="course-meta">
+                                <span class="course-meta-item">
+                                    <Clock class="icon icon-xs" /> {{ course.time }}
                                 </span>
-                                <span class="course-row__meta-item">
-                                    <MapPin class="icon icon--xs" /> {{ course.location }}
+                                <span class="course-meta-item">
+                                    <MapPin class="icon icon-xs" /> {{ course.location }}
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="course-row__actions">
+                    <div class="course-actions">
                         <button v-if="parseInt(course.attendance) < 95" @click="handleUrge(course.name)"
-                            class="btn btn--outline btn--warn">
-                            <BellRing class="icon icon--xs" />
+                            class="btn btn-outline btn-warn">
+                            <BellRing class="icon icon-xs" />
                             一键催促
                         </button>
-                        <div class="course-row__stat">
-                            <p class="course-row__stat-label">任课教师</p>
-                            <p class="course-row__stat-value">{{ course.teacher }}</p>
+                        <div class="course-stat">
+                            <p class="course-stat-label">任课教师</p>
+                            <p class="course-stat-value">{{ course.teacher }}</p>
                         </div>
 
-                        <div class="course-row__stat">
-                            <p class="course-row__stat-label">出勤率</p>
-                            <p class="course-row__stat-value"
-                                :class="parseInt(course.attendance) < 95 ? 'course-row__stat-value--warning' : 'course-row__stat-value--success'">
+                        <div class="course-stat">
+                            <p class="course-stat-label">出勤率</p>
+                            <p class="course-stat-value"
+                                :class="parseInt(course.attendance) < 95 ? 'is-warning' : 'is-success'">
                                 {{
                                     course.attendance }}</p>
                         </div>
-                        <button class="btn btn--ghost btn--icon">
+                        <button class="btn btn-ghost btn-icon">
                             <MoreHorizontal class="icon" />
                         </button>
                     </div>
@@ -127,6 +127,8 @@ const handleUrge = (courseName) => {
 </template>
 
 <style scoped lang="scss">
+@use '@/assets/tokens' as *;
+
 .summary-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -140,7 +142,7 @@ const handleUrge = (courseName) => {
     gap: 16px;
 }
 
-.summary-card__icon {
+.summary-icon {
     width: 48px;
     height: 48px;
     border-radius: 12px;
@@ -149,47 +151,47 @@ const handleUrge = (courseName) => {
     justify-content: center;
 }
 
-.summary-card__icon--indigo {
+.summary-icon.indigo {
     background: #ede9fe;
     color: #5b21b6;
 }
 
-.summary-card__icon--emerald {
+.summary-icon.emerald {
     background: #dcfce7;
     color: #15803d;
 }
 
-.summary-card__icon--amber {
+.summary-icon.amber {
     background: #fef3c7;
     color: #92400e;
 }
 
-.summary-card__label {
+.summary-label {
     font-size: 11px;
-    color: var(--color-slate-500);
+    color: $color-slate-500;
     text-transform: uppercase;
     font-weight: 600;
 }
 
-.summary-card__value {
+.summary-value {
     font-size: 22px;
     font-weight: 700;
-    color: var(--color-slate-900);
+    color: $color-slate-900;
 }
 
-.summary-card__unit {
+.summary-unit {
     font-size: 13px;
     font-weight: 400;
-    color: var(--color-slate-400);
+    color: $color-slate-400;
 }
 
 .course-list {
     overflow: hidden;
 }
 
-.course-list__header {
+.course-header {
     padding: 16px;
-    border-bottom: 1px solid var(--color-slate-200);
+    border-bottom: 1px solid $color-slate-200;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -197,7 +199,7 @@ const handleUrge = (courseName) => {
     flex-wrap: wrap;
 }
 
-.course-list__title {
+.course-title {
     font-size: 16px;
     font-weight: 700;
 }
@@ -207,20 +209,20 @@ const handleUrge = (courseName) => {
     width: 200px;
 }
 
-.search__icon {
+.search-icon {
     position: absolute;
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--color-slate-400);
+    color: $color-slate-400;
 }
 
-.search__input {
+.search-input {
     width: 100%;
-    background: var(--color-slate-100);
+    background: $color-slate-100;
 }
 
-.course-list__body {
+.course-body {
     display: flex;
     flex-direction: column;
 }
@@ -237,13 +239,13 @@ const handleUrge = (courseName) => {
     background: #f8fafc;
 }
 
-.course-row__info {
+.course-info {
     display: flex;
     gap: 16px;
     align-items: flex-start;
 }
 
-.course-row__icon {
+.course-icon {
     width: 48px;
     height: 48px;
     border-radius: 12px;
@@ -257,77 +259,77 @@ const handleUrge = (courseName) => {
     flex-shrink: 0;
 }
 
-.course-row__title {
+.course-title-row {
     display: flex;
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
 }
 
-.course-row__title h4 {
+.course-title-row h4 {
     margin: 0;
     font-weight: 700;
-    color: var(--color-slate-900);
+    color: $color-slate-900;
 }
 
-.course-row__code {
+.course-code {
     font-size: 12px;
-    color: var(--color-slate-400);
+    color: $color-slate-400;
 }
 
-.course-row__meta {
+.course-meta {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
     margin-top: 6px;
-    color: var(--color-slate-500);
+    color: $color-slate-500;
     font-size: 13px;
 }
 
-.course-row__meta-item {
+.course-meta-item {
     display: inline-flex;
     align-items: center;
     gap: 6px;
 }
 
-.course-row__actions {
+.course-actions {
     display: flex;
     align-items: center;
     gap: 16px;
     flex-wrap: wrap;
 }
 
-.btn--warn {
+.btn-warn {
     border-color: #fecdd3;
     color: #e11d48;
     background: #fff1f2;
     animation: pulse 1.6s ease-in-out infinite;
 }
 
-.btn--warn:hover {
+.btn-warn:hover {
     background: #ffe4e6;
 }
 
-.course-row__stat {
+.course-stat {
     text-align: center;
 }
 
-.course-row__stat-label {
+.course-stat-label {
     font-size: 11px;
-    color: var(--color-slate-400);
+    color: $color-slate-400;
 }
 
-.course-row__stat-value {
+.course-stat-value {
     font-size: 13px;
     font-weight: 600;
-    color: var(--color-slate-700);
+    color: $color-slate-700;
 }
 
-.course-row__stat-value--warning {
+.course-stat-value.is-warning {
     color: #d97706;
 }
 
-.course-row__stat-value--success {
+.course-stat-value.is-success {
     color: #16a34a;
 }
 
@@ -352,8 +354,8 @@ const handleUrge = (courseName) => {
         justify-content: space-between;
     }
 
-    .course-row__actions {
-        border-left: 1px solid var(--color-slate-100);
+    .course-actions {
+        border-left: 1px solid $color-slate-100;
         padding-left: 16px;
     }
 }

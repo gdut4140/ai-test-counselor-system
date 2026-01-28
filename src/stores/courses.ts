@@ -1,26 +1,36 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
+export type CourseStatus = 'ongoing' | 'ended' | 'registering'
+
+export interface Course {
+    id: number
+    name: string
+    code: string
+    status: CourseStatus
+    attendance: string
+    time: string
+    location: string
+    teacher: string
+}
+
 export const useCourseStore = defineStore('courses', () => {
-    // State
-    const courses = ref([])
+    const courses = ref<Course[]>([])
     const isLoading = ref(false)
-    const error = ref(null)
+    const error = ref<Error | null>(null)
     let initialized = false
 
-    // Getters
     const ongoingCourses = computed(() => courses.value.filter(c => c.status === 'ongoing'))
 
-    // Actions
     async function fetchCourses() {
         isLoading.value = true
         error.value = null
         try {
             const response = await fetch('/mock/courses.json')
             if (!response.ok) throw new Error('Failed to load courses')
-            courses.value = await response.json()
+            courses.value = (await response.json()) as Course[]
         } catch (err) {
-            error.value = err
+            error.value = err instanceof Error ? err : new Error('Failed to load courses')
         } finally {
             isLoading.value = false
         }
@@ -32,7 +42,7 @@ export const useCourseStore = defineStore('courses', () => {
         fetchCourses()
     }
 
-    function addCourse(course) {
+    function addCourse(course: Omit<Course, 'id' | 'status' | 'attendance'> & Partial<Pick<Course, 'status' | 'attendance'>>) {
         courses.value.push({
             id: Date.now(),
             status: 'ongoing',

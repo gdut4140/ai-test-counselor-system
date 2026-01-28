@@ -1,24 +1,31 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+
+export interface User {
+    id: number
+    name: string
+    role: string
+    roleName: string
+    avatar?: string | null
+    college: string
+}
+
+export interface Credentials {
+    username?: string
+    password?: string
+}
 
 export const useAuthStore = defineStore('auth', () => {
-    const router = useRouter()
-
-    // State
-    const user = ref(null)
-    const token = ref(null)
+    const user = ref<User | null>(null)
+    const token = ref<string | null>(null)
     const isLoading = ref(false)
 
-    // Getters
     const isAuthenticated = computed(() => !!token.value)
     const currentUser = computed(() => user.value)
 
-    // Actions
-    function login(credentials) {
+    function login(_credentials: Credentials) {
         isLoading.value = true
-        // Simulate API call
-        return new Promise((resolve) => {
+        return new Promise<boolean>((resolve) => {
             setTimeout(() => {
                 token.value = 'mock-jwt-token'
                 user.value = {
@@ -26,7 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
                     name: '王老师',
                     role: 'counselor',
                     roleName: '辅导员',
-                    avatar: null, // default handling in UI
+                    avatar: null,
                     college: '自动化学院'
                 }
                 localStorage.setItem('token', token.value)
@@ -40,16 +47,12 @@ export const useAuthStore = defineStore('auth', () => {
         token.value = null
         user.value = null
         localStorage.removeItem('token')
-        // Redirect logic is usually handled in component or router guard, 
-        // but store can just clear state.
     }
 
-    // Initialize from storage
     function init() {
         const storedToken = localStorage.getItem('token')
         if (storedToken) {
             token.value = storedToken
-            // Mock restoring user
             user.value = {
                 id: 1,
                 name: '王老师',

@@ -1,7 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue' // Keep ref if needed for modals etc
 import { storeToRefs } from 'pinia'
 import { useActivityStore } from '../../stores/activities'
+import type { Activity } from '../../stores/activities'
 import { useTabs } from '../../composables/useTabs'
 import PageHeader from '../../components/PageHeader.vue'
 import StatusBadge from '../../components/StatusBadge.vue'
@@ -27,7 +28,7 @@ const tabsData = [
 
 const { activeTabId: activeTab, setTab } = useTabs(tabsData)
 
-const filteredActivities = computed(() => {
+const filteredActivities = computed<Activity[]>(() => {
     if (activeTab.value === 'all') return activities.value
     return activities.value.filter(item => item.status === activeTab.value)
 })
@@ -41,8 +42,8 @@ const filteredActivities = computed(() => {
         <!-- Page Header -->
         <PageHeader title="活动管理">
             <template #actions>
-                <button class="btn btn--primary">
-                    <Plus class="icon icon--sm" />
+                <button class="btn btn-primary">
+                    <Plus class="icon icon-sm" />
                     发布活动
                 </button>
             </template>
@@ -52,62 +53,62 @@ const filteredActivities = computed(() => {
         <div class="filter-bar card">
             <div class="tabs">
                 <button v-for="tab in tabsData" :key="tab.id" @click="setTab(tab.id)" class="tab"
-                    :class="activeTab === tab.id ? 'tab--active' : ''">
+                    :class="activeTab === tab.id ? 'tab-active' : ''">
                     {{ tab.name }}
-                    <span v-if="tab.count" class="tab__count">{{
+                    <span v-if="tab.count" class="tab-count">{{
                         tab.count }}</span>
                 </button>
             </div>
 
-            <div class="filter-bar__right">
+            <div class="filter-right">
                 <div class="search">
-                    <Search class="icon icon--sm search__icon" />
-                    <input type="text" placeholder="搜索活动名称..." class="input input--search search__input" />
+                    <Search class="icon icon-sm search-icon" />
+                    <input type="text" placeholder="搜索活动名称..." class="input input-search search-input" />
                 </div>
-                <button class="btn btn--outline btn--icon">
-                    <Filter class="icon icon--sm" />
+                <button class="btn btn-outline btn-icon">
+                    <Filter class="icon icon-sm" />
                 </button>
             </div>
         </div>
 
         <!-- Grid Layout for Activities -->
         <div class="activity-grid">
-            <div v-for="activity in filteredActivities" :key="activity.id" class="activity-card card card--hover">
+            <div v-for="activity in filteredActivities" :key="activity.id" class="activity-card card card-hover">
                 <!-- Card Header / Cover Placeholder -->
-                <div class="activity-card__cover" :class="activity.cover">
-                    <Calendar class="icon activity-card__cover-icon" />
-                    <div class="activity-card__badge">
+                <div class="card-cover" :class="activity.cover">
+                    <Calendar class="icon cover-icon" />
+                    <div class="card-badge">
                         <StatusBadge :status="activity.status" />
                     </div>
                 </div>
 
-                <div class="activity-card__body">
-                    <div class="activity-card__meta">
+                <div class="card-body">
+                    <div class="card-meta">
                         <span class="tag">{{ activity.type }}</span>
                     </div>
 
-                    <h3 class="activity-card__title">
+                    <h3 class="card-title">
                         {{ activity.title }}</h3>
 
-                    <div class="activity-card__details">
+                    <div class="card-details">
                         <div class="detail-row">
-                            <Calendar class="icon icon--sm detail-row__icon" />
+                            <Calendar class="icon icon-sm detail-icon" />
                             {{ activity.startTime }}
                         </div>
                         <div class="detail-row">
-                            <MapPin class="icon icon--sm detail-row__icon" />
+                            <MapPin class="icon icon-sm detail-icon" />
                             {{ activity.location }}
                         </div>
                     </div>
 
-                    <div class="activity-card__footer">
+                    <div class="card-footer">
                         <div class="participants">
-                            <Users class="icon icon--sm" />
-                            <span class="participants__count">{{ activity.participants }}</span>
-                            <span class="participants__divider">/</span>
-                            <span class="participants__max">{{ activity.maxParticipants }}</span>
+                            <Users class="icon icon-sm" />
+                            <span class="participants-count">{{ activity.participants }}</span>
+                            <span class="participants-divider">/</span>
+                            <span class="participants-max">{{ activity.maxParticipants }}</span>
                         </div>
-                        <button class="btn btn--ghost btn--icon">
+                        <button class="btn btn-ghost btn-icon">
                             <MoreHorizontal class="icon" />
                         </button>
                     </div>
@@ -115,17 +116,19 @@ const filteredActivities = computed(() => {
             </div>
 
             <!-- Add New Placeholder -->
-            <button class="activity-card activity-card--add">
-                <div class="activity-card__add-icon">
+            <button class="activity-card card-add">
+                <div class="add-icon">
                     <Plus class="icon" />
                 </div>
-                <span class="activity-card__add-text">发布新活动</span>
+                <span class="add-text">发布新活动</span>
             </button>
         </div>
     </div>
 </template>
 
 <style scoped lang="scss">
+@use '@/assets/tokens' as *;
+
 .filter-bar {
     display: flex;
     flex-direction: column;
@@ -136,7 +139,7 @@ const filteredActivities = computed(() => {
 .tabs {
     display: flex;
     align-items: center;
-    background: var(--color-slate-100);
+    background: $color-slate-100;
     padding: 6px;
     border-radius: 12px;
     gap: 6px;
@@ -150,27 +153,27 @@ const filteredActivities = computed(() => {
     border-radius: 10px;
     font-size: 13px;
     font-weight: 600;
-    color: var(--color-slate-500);
+    color: $color-slate-500;
     cursor: pointer;
     transition: background 200ms ease, color 200ms ease, box-shadow 200ms ease;
 }
 
-.tab--active {
-    background: var(--color-white);
-    color: var(--color-slate-900);
-    box-shadow: var(--shadow-sm);
+.tab-active {
+    background: $color-white;
+    color: $color-slate-900;
+    box-shadow: $shadow-sm;
 }
 
-.tab__count {
+.tab-count {
     margin-left: 6px;
     padding: 2px 6px;
     border-radius: 999px;
     background: rgba(124, 58, 237, 0.15);
-    color: var(--color-primary);
+    color: $color-primary;
     font-size: 11px;
 }
 
-.filter-bar__right {
+.filter-right {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -182,15 +185,15 @@ const filteredActivities = computed(() => {
     flex: 1;
 }
 
-.search__icon {
+.search-icon {
     position: absolute;
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--color-slate-400);
+    color: $color-slate-400;
 }
 
-.search__input {
+.search-input {
     width: 100%;
 }
 
@@ -206,28 +209,28 @@ const filteredActivities = computed(() => {
     overflow: hidden;
 }
 
-.activity-card__cover {
+.card-cover {
     height: 128px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    border-bottom: 1px solid var(--color-slate-100);
+    border-bottom: 1px solid $color-slate-100;
 }
 
-.activity-card__cover-icon {
+.cover-icon {
     width: 48px;
     height: 48px;
     opacity: 0.5;
 }
 
-.activity-card__badge {
+.card-badge {
     position: absolute;
     top: 12px;
     right: 12px;
 }
 
-.activity-card__body {
+.card-body {
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -235,7 +238,7 @@ const filteredActivities = computed(() => {
     flex: 1;
 }
 
-.activity-card__meta {
+.card-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -244,23 +247,23 @@ const filteredActivities = computed(() => {
 .tag {
     font-size: 11px;
     font-weight: 600;
-    color: var(--color-primary);
+    color: $color-primary;
     background: rgba(124, 58, 237, 0.12);
     padding: 4px 8px;
     border-radius: 8px;
 }
 
-.activity-card__title {
+.card-title {
     font-size: 16px;
     font-weight: 700;
-    color: var(--color-slate-900);
+    color: $color-slate-900;
 }
 
-.activity-card__details {
+.card-details {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    color: var(--color-slate-500);
+    color: $color-slate-500;
     font-size: 13px;
 }
 
@@ -270,14 +273,14 @@ const filteredActivities = computed(() => {
     gap: 8px;
 }
 
-.detail-row__icon {
-    color: var(--color-slate-400);
+.detail-icon {
+    color: $color-slate-400;
 }
 
-.activity-card__footer {
+.card-footer {
     margin-top: auto;
     padding-top: 16px;
-    border-top: 1px solid var(--color-slate-100);
+    border-top: 1px solid $color-slate-100;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -288,21 +291,21 @@ const filteredActivities = computed(() => {
     align-items: center;
     gap: 6px;
     font-size: 13px;
-    color: var(--color-slate-600);
+    color: $color-slate-600;
 }
 
-.participants__count {
+.participants-count {
     font-weight: 600;
-    color: var(--color-slate-900);
+    color: $color-slate-900;
 }
 
-.participants__divider,
-.participants__max {
-    color: var(--color-slate-400);
+.participants-divider,
+.participants-max {
+    color: $color-slate-400;
 }
 
-.activity-card--add {
-    border: 2px dashed var(--color-slate-200);
+.card-add {
+    border: 2px dashed $color-slate-200;
     background: transparent;
     align-items: center;
     justify-content: center;
@@ -311,38 +314,38 @@ const filteredActivities = computed(() => {
     transition: border-color 200ms ease, color 200ms ease, background 200ms ease;
 }
 
-.activity-card--add:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+.card-add:hover {
+    border-color: $color-primary;
+    color: $color-primary;
     background: rgba(124, 58, 237, 0.05);
 }
 
-.activity-card__add-icon {
+.add-icon {
     width: 48px;
     height: 48px;
     border-radius: 999px;
-    background: var(--color-slate-100);
+    background: $color-slate-100;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 12px;
 }
 
-.activity-card__add-text {
+.add-text {
     font-weight: 600;
 }
 
-.cover--indigo {
+.cover-indigo {
     background: #ede9fe;
     color: #5b21b6;
 }
 
-.cover--blue {
+.cover-blue {
     background: #dbeafe;
     color: #1d4ed8;
 }
 
-.cover--emerald {
+.cover-emerald {
     background: #dcfce7;
     color: #15803d;
 }
@@ -354,7 +357,7 @@ const filteredActivities = computed(() => {
         justify-content: space-between;
     }
 
-    .filter-bar__right {
+    .filter-right {
         width: auto;
     }
 
