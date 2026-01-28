@@ -1,0 +1,60 @@
+{
+    "code": 200,
+    "msg": "获取已发送的消息成功",
+    "data": [
+        {
+            "messageId": 1001,
+            "messageType": "class",
+            "classId": "01",
+            "studentIdNumber": null,
+            "content": "今晚 22:00 前完成班级卫生检查并拍照上报。",
+            "sendTime": "2023-05-01 10:00:00",
+            "sender": "王老师"
+        },
+        {
+            "messageId": 1002,
+            "messageType": "student",
+            "classId": null,
+            "studentIdNumber": "20230101001",
+            "content": "请于明天 9:00 前提交学业预警材料。",
+            "sendTime": "2023-05-02 09:20:00",
+            "sender": "王老师"
+        },
+        {
+            "messageId": 1003,
+            "messageType": "class",
+            "classId": "03",
+            "studentIdNumber": null,
+            "content": "周五下午 3 点班会，请提前准备问题清单。",
+            "sendTime": "2023-05-03 14:10:00",
+            "sender": "王老师"
+        },
+        {
+            "messageId": 1004,
+            "messageType": "student",
+            "classId": null,
+            "studentIdNumber": "20230101018",
+            "content": "你的奖学金材料已收齐，如有补充请在周三前反馈。",
+            "sendTime": "2023-05-04 11:05:00",
+            "sender": "王老师"
+        },
+        {
+            "messageId": 1005,
+            "messageType": "class",
+            "classId": "02",
+            "studentIdNumber": null,
+            "content": "下周一晨跑考勤，请提前 10 分钟集合。",
+            "sendTime": "2023-05-05 08:30:00",
+            "sender": "王老师"
+        },
+        {
+            "messageId": 1006,
+            "messageType": "student",
+            "classId": null,
+            "studentIdNumber": "20230102006",
+            "content": "请补交本周心理咨询预约反馈表。",
+            "sendTime": "2023-05-06 16:45:00",
+            "sender": "王老师"
+        }
+    ]
+}

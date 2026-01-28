@@ -3,6 +3,7 @@ import {
     LayoutDashboard,
     Users,
     GraduationCap,
+    MessageSquare,
     Settings,
     LogOut,
     Bell,
@@ -26,6 +27,7 @@ const navigation: NavigationItem[] = [
     { name: '活动管理', href: '/activities', icon: Users },
     { name: '学生管理', href: '/students', icon: GraduationCap },
     { name: '课程管理', href: '/courses', icon: BookOpen },
+    { name: '消息管理', href: '/messages', icon: MessageSquare },
     { name: '系统管理', href: '/system', icon: Settings },
 ]
 

@@ -6,6 +6,7 @@ import ActivityList from '../views/activities/ActivityList.vue'
 import StudentList from '../views/students/StudentList.vue'
 import CourseList from '../views/courses/CourseList.vue'
 import SystemSettings from '../views/system/SystemSettings.vue'
+import MessageCenter from '../views/messages/MessageCenter.vue'
 
 const routes: RouteRecordRaw[] = [
     {
@@ -42,6 +43,11 @@ const routes: RouteRecordRaw[] = [
                 path: 'system',
                 name: 'system',
                 component: SystemSettings
+            },
+            {
+                path: 'messages',
+                name: 'messages',
+                component: MessageCenter
             }
         ]
     }
