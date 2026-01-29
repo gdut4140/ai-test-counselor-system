@@ -108,191 +108,193 @@ const stats: StatCard[] = [
 <style scoped lang="scss">
 @use '@/assets/tokens' as *;
 
-.dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-}
+.dashboard {
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
 
-.dashboard-title {
-    font-size: 24px;
-    font-weight: 700;
-}
+        .dashboard-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
 
-.dashboard-subtitle {
-    margin-top: 4px;
-    color: $color-slate-500;
-    font-size: 14px;
-}
+        .dashboard-subtitle {
+            margin-top: 4px;
+            color: $color-slate-500;
+            font-size: 14px;
+        }
 
-.dashboard-actions {
-    display: flex;
-    gap: 12px;
-}
+        .dashboard-actions {
+            display: flex;
+            gap: 12px;
+        }
+    }
 
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-}
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
 
-.stat-card {
-    padding: 24px;
-}
+        .stat-card {
+            padding: 24px;
 
-.stat-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+            .stat-top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
 
-.stat-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+                .stat-icon {
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 14px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
 
-.stat-icon.icon-primary {
-    background: rgba(124, 58, 237, 0.12);
-    color: $color-primary;
-}
+                    &.icon-primary {
+                        background: rgba(124, 58, 237, 0.12);
+                        color: $color-primary;
+                    }
 
-.stat-icon.icon-emerald {
-    background: #dcfce7;
-    color: #16a34a;
-}
+                    &.icon-emerald {
+                        background: #dcfce7;
+                        color: #16a34a;
+                    }
 
-.stat-icon.icon-amber {
-    background: #fef3c7;
-    color: #d97706;
-}
+                    &.icon-amber {
+                        background: #fef3c7;
+                        color: #d97706;
+                    }
+                }
 
-.stat-trend {
-    font-size: 12px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: $color-slate-100;
-    color: $color-slate-600;
-}
+                .stat-trend {
+                    font-size: 12px;
+                    font-weight: 600;
+                    padding: 4px 10px;
+                    border-radius: 999px;
+                    background: $color-slate-100;
+                    color: $color-slate-600;
 
-.stat-trend.trend-up {
-    background: #dcfce7;
-    color: #166534;
-}
+                    &.trend-up {
+                        background: #dcfce7;
+                        color: #166534;
+                    }
+                }
+            }
 
-.stat-body {
-    margin-top: 16px;
-}
+            .stat-body {
+                margin-top: 16px;
 
-.stat-value {
-    font-size: 30px;
-    font-weight: 700;
-}
+                .stat-value {
+                    font-size: 30px;
+                    font-weight: 700;
+                }
 
-.stat-label {
-    margin-top: 6px;
-    color: $color-slate-500;
-    font-size: 13px;
-}
+                .stat-label {
+                    margin-top: 6px;
+                    color: $color-slate-500;
+                    font-size: 13px;
+                }
+            }
+        }
+    }
 
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
-}
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
 
-.panel {
-    overflow: hidden;
-}
+        .panel {
+            overflow: hidden;
+            padding: 20px;
 
-.panel-title {
-    font-size: 16px;
-    font-weight: 700;
-}
+            .panel-title {
+                font-size: 16px;
+                font-weight: 700;
 
-.panel-title.spaced {
-    margin-bottom: 20px;
-}
+                &.spaced {
+                    margin-bottom: 20px;
+                }
+            }
 
+            .timeline {
+                display: grid;
+                grid-template-columns: 32px 1fr;
+                gap: 12px;
+                padding: 12px 0;
+                position: relative;
 
-.timeline {
-    display: grid;
-    grid-template-columns: 32px 1fr;
-    gap: 12px;
-    padding: 12px 0;
-    position: relative;
-}
+                &::before {
+                    content: '';
+                    position: absolute;
+                    left: 14px;
+                    top: 16px;
+                    bottom: 16px;
+                    width: 2px;
+                    background: $color-slate-100;
+                }
 
-.timeline::before {
-    content: '';
-    position: absolute;
-    left: 14px;
-    top: 16px;
-    bottom: 16px;
-    width: 2px;
-    background: $color-slate-100;
-}
+                .timeline-item {
+                    display: flex;
+                    justify-content: center;
+                    align-items: flex-start;
+                    z-index: 1;
 
-.timeline-item {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    z-index: 1;
-}
+                    .timeline-dot {
+                        width: 12px;
+                        height: 12px;
+                        border-radius: 999px;
+                        margin-top: 4px;
+                        background: $color-slate-300;
 
-.timeline-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 999px;
-    margin-top: 4px;
-    background: $color-slate-300;
-}
+                        &.dot-primary {
+                            background: $color-primary;
+                            box-shadow: 0 0 0 6px rgba(124, 58, 237, 0.2);
+                        }
 
-.timeline-dot.dot-primary {
-    background: $color-primary;
-    box-shadow: 0 0 0 6px rgba(124, 58, 237, 0.2);
-}
+                        &.dot-success {
+                            background: #22c55e;
+                            box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.2);
+                        }
 
-.timeline-dot.dot-success {
-    background: #22c55e;
-    box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.2);
-}
+                        &.dot-muted {
+                            background: $color-slate-300;
+                        }
+                    }
+                }
 
-.timeline-dot.dot-muted {
-    background: $color-slate-300;
-}
+                .timeline-content {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
 
-.timeline-content {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
+                    .timeline-title {
+                        font-size: 13px;
+                        font-weight: 600;
+                        color: $color-slate-900;
+                    }
 
-.timeline-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: $color-slate-900;
-}
+                    .timeline-time {
+                        font-size: 12px;
+                        color: $color-slate-500;
+                    }
 
-.timeline-time {
-    font-size: 12px;
-    color: $color-slate-500;
-}
+                    .timeline-meta {
+                        font-size: 12px;
+                        color: $color-slate-400;
+                    }
+                }
+            }
 
-.timeline-meta {
-    font-size: 12px;
-    color: $color-slate-400;
-}
-
-.panel-footer {
-    margin-top: 24px;
-    padding-top: 24px;
-    border-top: 1px solid $color-slate-100;
+            .panel-footer {
+                margin-top: 24px;
+                padding-top: 24px;
+                border-top: 1px solid $color-slate-100;
+            }
+        }
+    }
 }
 </style>

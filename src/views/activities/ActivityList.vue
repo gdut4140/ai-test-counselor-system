@@ -256,327 +256,331 @@ const handleCreateSubmit = async () => {
 <style scoped lang="scss">
 @use '@/assets/tokens' as *;
 
-.filter-bar {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 16px;
-}
+.activity-page {
+    .filter-bar {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px;
 
-.tabs {
-    display: flex;
-    align-items: center;
-    background: $color-slate-100;
-    padding: 6px;
-    border-radius: 12px;
-    gap: 6px;
-    flex-wrap: wrap;
-}
+        .tabs {
+            display: flex;
+            align-items: center;
+            background: $color-slate-100;
+            padding: 6px;
+            border-radius: 12px;
+            gap: 6px;
+            flex-wrap: wrap;
 
-.tab {
-    border: none;
-    background: transparent;
-    padding: 6px 14px;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 600;
-    color: $color-slate-500;
-    cursor: pointer;
-    transition: background 200ms ease, color 200ms ease, box-shadow 200ms ease;
-}
+            .tab {
+                border: none;
+                background: transparent;
+                padding: 6px 14px;
+                border-radius: 10px;
+                font-size: 13px;
+                font-weight: 600;
+                color: $color-slate-500;
+                cursor: pointer;
+                transition: background 200ms ease, color 200ms ease, box-shadow 200ms ease;
 
-.tab-active {
-    background: $color-white;
-    color: $color-slate-900;
-    box-shadow: $shadow-sm;
-}
+                &.tab-active {
+                    background: $color-white;
+                    color: $color-slate-900;
+                    box-shadow: $shadow-sm;
+                }
 
-.tab-count {
-    margin-left: 6px;
-    padding: 2px 6px;
-    border-radius: 999px;
-    background: rgba(124, 58, 237, 0.15);
-    color: $color-primary;
-    font-size: 11px;
-}
+                .tab-count {
+                    margin-left: 6px;
+                    padding: 2px 6px;
+                    border-radius: 999px;
+                    background: rgba(124, 58, 237, 0.15);
+                    color: $color-primary;
+                    font-size: 11px;
+                }
+            }
+        }
 
-.filter-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-}
+        .filter-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
 
-.search {
-    position: relative;
-    flex: 1;
-}
+            .search {
+                position: relative;
+                flex: 1;
 
-.search-icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: $color-slate-400;
-}
+                .search-icon {
+                    position: absolute;
+                    left: 12px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: $color-slate-400;
+                }
 
-.search-input {
-    width: 100%;
-}
+                .search-input {
+                    width: 100%;
+                }
+            }
+        }
+    }
 
-.activity-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-}
+    .activity-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
 
-.activity-card {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
+        .activity-card {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
 
-.card-cover {
-    height: 128px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    border-bottom: 1px solid $color-slate-100;
-}
+            &.card-add {
+                border: 2px dashed $color-slate-200;
+                background: transparent;
+                align-items: center;
+                justify-content: center;
+                min-height: 280px;
+                cursor: pointer;
+                transition: border-color 200ms ease, color 200ms ease, background 200ms ease;
 
-.cover-icon {
-    width: 48px;
-    height: 48px;
-    opacity: 0.5;
-}
+                &:hover {
+                    border-color: $color-primary;
+                    color: $color-primary;
+                    background: rgba(124, 58, 237, 0.05);
+                }
 
-.card-badge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-}
+                .add-icon {
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 999px;
+                    background: $color-slate-100;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-bottom: 12px;
+                }
 
-.card-body {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    flex: 1;
-}
+                .add-text {
+                    font-weight: 600;
+                }
+            }
 
-.modal {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 200;
-}
+            .card-cover {
+                height: 128px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                border-bottom: 1px solid $color-slate-100;
 
-.modal-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.4);
-}
+                &.cover-indigo {
+                    background: #ede9fe;
+                    color: #5b21b6;
+                }
 
-.modal-card {
-    position: relative;
-    width: min(680px, 92vw);
-    background: $color-white;
-    border-radius: 20px;
-    box-shadow: $shadow-lg;
-    border: 1px solid $color-slate-100;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 20px;
-}
+                &.cover-blue {
+                    background: #dbeafe;
+                    color: #1d4ed8;
+                }
 
-.modal-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-}
+                &.cover-emerald {
+                    background: #dcfce7;
+                    color: #15803d;
+                }
 
-.modal-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: $color-slate-900;
-}
+                .cover-icon {
+                    width: 48px;
+                    height: 48px;
+                    opacity: 0.5;
+                }
 
-.modal-subtitle {
-    margin-top: 6px;
-    font-size: 13px;
-    color: $color-slate-500;
-}
+                .card-badge {
+                    position: absolute;
+                    top: 12px;
+                    right: 12px;
+                }
+            }
 
-.modal-body {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
+            .card-body {
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                flex: 1;
 
-.modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-}
+                .card-meta {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
 
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-}
+                    .tag {
+                        font-size: 11px;
+                        font-weight: 600;
+                        color: $color-primary;
+                        background: rgba(124, 58, 237, 0.12);
+                        padding: 4px 8px;
+                        border-radius: 8px;
+                    }
+                }
 
-.form-field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
+                .card-title {
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: $color-slate-900;
+                }
 
-.form-full {
-    grid-column: 1 / -1;
-}
+                .card-details {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    color: $color-slate-500;
+                    font-size: 13px;
 
-.form-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: $color-slate-700;
-}
+                    .detail-row {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
 
-.form-error {
-    font-size: 13px;
-    color: $color-rose-600;
-}
+                        .detail-icon {
+                            color: $color-slate-400;
+                        }
+                    }
+                }
 
-.card-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+                .card-footer {
+                    margin-top: auto;
+                    padding-top: 16px;
+                    border-top: 1px solid $color-slate-100;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
 
-.tag {
-    font-size: 11px;
-    font-weight: 600;
-    color: $color-primary;
-    background: rgba(124, 58, 237, 0.12);
-    padding: 4px 8px;
-    border-radius: 8px;
-}
+                    .participants {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        font-size: 13px;
+                        color: $color-slate-600;
 
-.card-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: $color-slate-900;
-}
+                        .participants-count {
+                            font-weight: 600;
+                            color: $color-slate-900;
+                        }
 
-.card-details {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    color: $color-slate-500;
-    font-size: 13px;
-}
+                        .participants-divider,
+                        .participants-max {
+                            color: $color-slate-400;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-.detail-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+    .modal {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 200;
 
-.detail-icon {
-    color: $color-slate-400;
-}
+        .modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+        }
 
-.card-footer {
-    margin-top: auto;
-    padding-top: 16px;
-    border-top: 1px solid $color-slate-100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+        .modal-card {
+            position: relative;
+            width: min(680px, 92vw);
+            background: $color-white;
+            border-radius: 20px;
+            box-shadow: $shadow-lg;
+            border: 1px solid $color-slate-100;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 20px;
 
-.participants {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    color: $color-slate-600;
-}
+            .modal-header {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 16px;
 
-.participants-count {
-    font-weight: 600;
-    color: $color-slate-900;
-}
+                .modal-title {
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: $color-slate-900;
+                }
 
-.participants-divider,
-.participants-max {
-    color: $color-slate-400;
-}
+                .modal-subtitle {
+                    margin-top: 6px;
+                    font-size: 13px;
+                    color: $color-slate-500;
+                }
+            }
 
-.card-add {
-    border: 2px dashed $color-slate-200;
-    background: transparent;
-    align-items: center;
-    justify-content: center;
-    min-height: 280px;
-    cursor: pointer;
-    transition: border-color 200ms ease, color 200ms ease, background 200ms ease;
-}
+            .modal-body {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
 
-.card-add:hover {
-    border-color: $color-primary;
-    color: $color-primary;
-    background: rgba(124, 58, 237, 0.05);
-}
+                .form-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                    gap: 16px;
 
-.add-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 999px;
-    background: $color-slate-100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 12px;
-}
+                    .form-field {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
 
-.add-text {
-    font-weight: 600;
-}
+                        &.form-full {
+                            grid-column: 1 / -1;
+                        }
 
-.cover-indigo {
-    background: #ede9fe;
-    color: #5b21b6;
-}
+                        .form-label {
+                            font-size: 13px;
+                            font-weight: 600;
+                            color: $color-slate-700;
+                        }
+                    }
+                }
 
-.cover-blue {
-    background: #dbeafe;
-    color: #1d4ed8;
-}
+                .form-error {
+                    font-size: 13px;
+                    color: $color-rose-600;
+                }
+            }
 
-.cover-emerald {
-    background: #dcfce7;
-    color: #15803d;
+            .modal-actions {
+                display: flex;
+                justify-content: flex-end;
+                gap: 12px;
+            }
+        }
+    }
 }
 
 @media (min-width: 640px) {
-    .filter-bar {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-    }
+    .activity-page {
+        .filter-bar {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
 
-    .filter-right {
-        width: auto;
-    }
+            .filter-right {
+                width: auto;
 
-    .search {
-        width: 260px;
+                .search {
+                    width: 260px;
+                }
+            }
+        }
     }
 }
 </style>

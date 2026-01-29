@@ -239,8 +239,10 @@ const handleResetSubmit = async () => {
         transition: opacity 200ms ease;
     }
 
-    .btn-primary:hover .login-icon {
-        opacity: 1;
+    .btn-primary {
+        &:hover .login-icon {
+            opacity: 1;
+        }
     }
 
     .login-submit {
