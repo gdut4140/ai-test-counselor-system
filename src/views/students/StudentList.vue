@@ -227,248 +227,252 @@ const getStudentStatusLabel = (status: StudentStatus) => statusLabelMap[status] 
 <style scoped lang="scss">
 @use '@/assets/tokens' as *;
 
-.filter-bar {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 16px;
-}
+.student-page {
+    .filter-bar {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 16px;
 
-.filter-left {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-}
+        .filter-left {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
 
-.filter-left .select {
-    width: 100%;
-}
+            .select {
+                width: 100%;
+            }
+        }
 
-.filter-right {
-    display: flex;
-    justify-content: flex-end;
-}
+        .filter-right {
+            display: flex;
+            justify-content: flex-end;
 
-.search {
-    position: relative;
-    width: min(320px, 100%);
-}
+            .search {
+                position: relative;
+                width: min(320px, 100%);
 
-.search-icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: $color-slate-400;
-}
+                .search-icon {
+                    position: absolute;
+                    left: 12px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: $color-slate-400;
+                }
 
-.search-input {
-    width: 100%;
-}
+                .search-input {
+                    width: 100%;
+                }
+            }
+        }
+    }
 
-.table-card {
-    overflow: hidden;
-}
+    .table-card {
+        overflow: hidden;
 
-.attendance-card {
-    margin-top: 16px;
-    padding: 16px;
-}
+        .table-scroll {
+            overflow-x: auto;
+        }
 
-.attendance-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-}
+        .table-head {
+            font-weight: 700;
+        }
 
-.attendance-label {
-    font-size: 12px;
-    color: $color-slate-500;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-}
+        .table-head-actions {
+            text-align: right;
+        }
 
-.attendance-class {
-    font-size: 16px;
-    font-weight: 700;
-    color: $color-slate-900;
-}
+        .table-row {
+            transition: background 200ms ease;
+        }
 
-.attendance-rate {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
+        .table-cell {
+            display: flex;
+            align-items: center;
+            gap: 16px;
 
-.attendance-rate-label {
-    font-size: 12px;
-    color: $color-slate-500;
-}
+            .avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 999px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
 
-.attendance-rate-value {
-    font-size: 20px;
-    font-weight: 700;
-    color: $color-primary;
-}
+                &.avatar-muted {
+                    background: $color-slate-100;
+                    color: $color-slate-500;
+                }
+            }
 
-.attendance-body {
-    margin-top: 16px;
-}
+            .table-primary {
+                font-weight: 600;
+                color: $color-slate-900;
+            }
 
-.attendance-subtitle {
-    font-size: 13px;
-    font-weight: 600;
-    color: $color-slate-700;
-    margin-bottom: 12px;
-}
+            .table-secondary {
+                font-size: 12px;
+                color: $color-slate-500;
+            }
+        }
 
-.attendance-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-}
+        .table-actions {
+            text-align: right;
+        }
 
-.attendance-item {
-    padding: 12px;
-    border-radius: 12px;
-    background: $color-slate-50;
-    border: 1px solid $color-slate-100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-}
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12px;
+            color: $color-slate-600;
 
-.attendance-name {
-    font-weight: 600;
-    color: $color-slate-900;
-}
+            .contact-item {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+            }
+        }
 
-.attendance-id {
-    font-size: 12px;
-    color: $color-slate-500;
-}
+        .table-footer {
+            padding: 12px 16px;
+            border-top: 1px solid $color-slate-200;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
 
-.attendance-count {
-    font-size: 12px;
-    font-weight: 600;
-    color: $color-rose-600;
-}
+            .pagination-text {
+                font-size: 13px;
+                color: $color-slate-500;
+            }
 
-.table-scroll {
-    overflow-x: auto;
-}
+            .pagination-nav {
+                display: inline-flex;
+                gap: 8px;
 
-.table-head {
-    font-weight: 700;
-}
+                .pagination-link {
+                    padding: 6px 12px;
+                    border-radius: 8px;
+                    border: 1px solid $color-slate-200;
+                    background: $color-white;
+                    color: $color-slate-600;
+                    font-size: 13px;
+                    cursor: pointer;
+                    transition: background 200ms ease;
 
-.table-head-actions {
-    text-align: right;
-}
+                    &:hover {
+                        background: $color-slate-100;
+                    }
 
-.table-row {
-    transition: background 200ms ease;
-}
+                    &.is-disabled {
+                        color: $color-slate-400;
+                        cursor: not-allowed;
+                    }
+                }
+            }
+        }
+    }
 
-.table-cell {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
+    .attendance-card {
+        margin-top: 16px;
+        padding: 16px;
 
-.table-primary {
-    font-weight: 600;
-    color: $color-slate-900;
-}
+        .attendance-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
 
-.table-secondary {
-    font-size: 12px;
-    color: $color-slate-500;
-}
+            .attendance-label {
+                font-size: 12px;
+                color: $color-slate-500;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+            }
 
-.table-actions {
-    text-align: right;
-}
+            .attendance-class {
+                font-size: 16px;
+                font-weight: 700;
+                color: $color-slate-900;
+            }
 
-.avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 999px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-}
+            .attendance-rate {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
 
-.avatar-muted {
-    background: $color-slate-100;
-    color: $color-slate-500;
-}
+                .attendance-rate-label {
+                    font-size: 12px;
+                    color: $color-slate-500;
+                }
 
-.contact-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-size: 12px;
-    color: $color-slate-600;
-}
+                .attendance-rate-value {
+                    font-size: 20px;
+                    font-weight: 700;
+                    color: $color-primary;
+                }
+            }
+        }
 
-.contact-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
+        .attendance-body {
+            margin-top: 16px;
 
-.table-footer {
-    padding: 12px 16px;
-    border-top: 1px solid $color-slate-200;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-}
+            .attendance-subtitle {
+                font-size: 13px;
+                font-weight: 600;
+                color: $color-slate-700;
+                margin-bottom: 12px;
+            }
 
-.pagination-text {
-    font-size: 13px;
-    color: $color-slate-500;
-}
+            .attendance-list {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 12px;
 
-.pagination-nav {
-    display: inline-flex;
-    gap: 8px;
-}
+                .attendance-item {
+                    padding: 12px;
+                    border-radius: 12px;
+                    background: $color-slate-50;
+                    border: 1px solid $color-slate-100;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 12px;
 
-.pagination-link {
-    padding: 6px 12px;
-    border-radius: 8px;
-    border: 1px solid $color-slate-200;
-    background: $color-white;
-    color: $color-slate-600;
-    font-size: 13px;
-    cursor: pointer;
-    transition: background 200ms ease;
-}
+                    .attendance-name {
+                        font-weight: 600;
+                        color: $color-slate-900;
+                    }
 
-.pagination-link:hover {
-    background: $color-slate-100;
-}
+                    .attendance-id {
+                        font-size: 12px;
+                        color: $color-slate-500;
+                    }
 
-.pagination-link.is-disabled {
-    color: $color-slate-400;
-    cursor: not-allowed;
+                    .attendance-count {
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: $color-rose-600;
+                    }
+                }
+            }
+        }
+    }
 }
 
 @media (min-width: 768px) {
-    .filter-bar {
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: center;
-    }
+    .student-page {
+        .filter-bar {
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
 
-    .filter-right {
-        justify-content: flex-end;
+            .filter-right {
+                justify-content: flex-end;
+            }
+        }
     }
 }
 </style>

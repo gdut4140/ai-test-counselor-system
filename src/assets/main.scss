@@ -61,15 +61,15 @@ img {
   border: 1px solid $color-slate-200;
   border-radius: 16px;
   box-shadow: $shadow-sm;
-}
 
-.card-hover {
-  transition: box-shadow 200ms ease, transform 200ms ease;
-  cursor: pointer;
+  &.card-hover {
+    transition: box-shadow 200ms ease, transform 200ms ease;
+    cursor: pointer;
 
-  &:hover {
-    box-shadow: $shadow-md;
-    transform: translateY(-2px);
+    &:hover {
+      box-shadow: $shadow-md;
+      transform: translateY(-2px);
+    }
   }
 }
 
@@ -303,16 +303,16 @@ img {
 .icon {
   width: 20px;
   height: 20px;
-}
 
-.icon-sm {
-  width: 16px;
-  height: 16px;
-}
+  &.icon-sm {
+    width: 16px;
+    height: 16px;
+  }
 
-.icon-xs {
-  width: 14px;
-  height: 14px;
+  &.icon-xs {
+    width: 14px;
+    height: 14px;
+  }
 }
 
 .sr-only {

@@ -170,7 +170,8 @@ const nextPage = () => {
                     <div class="compose-grid">
                         <div v-if="composeType === 'student'" class="form-field">
                             <label class="form-label">学生学号</label>
-                            <input v-model="composeStudentIdNumber" type="text" class="input" placeholder="如 20230101001" />
+                            <input v-model="composeStudentIdNumber" type="text" class="input"
+                                placeholder="如 20230101001" />
                         </div>
                         <div v-else class="form-field">
                             <label class="form-label">班级 ID</label>
@@ -274,11 +275,14 @@ const nextPage = () => {
                                 <tr v-for="item in pagedMessages" :key="item.messageId" class="table-row">
                                     <td>
                                         <div class="message-type">
-                                            <span class="type-badge" :class="item.messageType === 'class' ? 'badge-class' : 'badge-student'">
+                                            <span class="type-badge"
+                                                :class="item.messageType === 'class' ? 'badge-class' : 'badge-student'">
                                                 {{ typeLabelMap[item.messageType] }}
                                             </span>
                                             <span class="type-target">
-                                                {{ item.messageType === 'class' ? (item.classId || '—') : (item.studentIdNumber || '—') }}
+                                                {{ item.messageType === 'class' ? (item.classId || '—') :
+                                                (item.studentIdNumber
+                                                || '—') }}
                                             </span>
                                         </div>
                                     </td>
@@ -298,8 +302,8 @@ const nextPage = () => {
                         共 {{ totalFiltered }} 条记录 · 全部 {{ totalCount }} 条
                     </div>
                     <div class="pagination-nav">
-                        <button class="pagination-link" :class="pageNum === 1 ? 'is-disabled' : ''" :disabled="pageNum === 1"
-                            @click="prevPage">上一页</button>
+                        <button class="pagination-link" :class="pageNum === 1 ? 'is-disabled' : ''"
+                            :disabled="pageNum === 1" @click="prevPage">上一页</button>
                         <span class="pagination-page">{{ pageNum }}/{{ totalPages }}</span>
                         <button class="pagination-link" :class="pageNum === totalPages ? 'is-disabled' : ''"
                             :disabled="pageNum === totalPages" @click="nextPage">下一页</button>
@@ -313,239 +317,243 @@ const nextPage = () => {
 <style scoped lang="scss">
 @use '@/assets/tokens' as *;
 
-.message-container {
-    max-width: 800px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: $space-lg;
-}
+.message-page {
+    .message-container {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: $space-lg;
 
-.message-compose,
-.message-history {
-    padding: 24px;
-}
+        .message-compose,
+        .message-history {
+            padding: 24px;
+        }
 
-.section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-}
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
 
-.section-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: $color-slate-900;
-}
+            .section-title {
+                font-size: 18px;
+                font-weight: 700;
+                color: $color-slate-900;
+            }
 
-.section-subtitle {
-    margin-top: 4px;
-    color: $color-slate-500;
-    font-size: 13px;
-}
+            .section-subtitle {
+                margin-top: 4px;
+                color: $color-slate-500;
+                font-size: 13px;
+            }
 
-.compose-meta {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: $color-slate-100;
-    padding: 6px 12px;
-    border-radius: 999px;
-    font-size: 12px;
-    color: $color-slate-600;
-}
+            .compose-meta {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: $color-slate-100;
+                padding: 6px 12px;
+                border-radius: 999px;
+                font-size: 12px;
+                color: $color-slate-600;
+            }
+        }
 
-.type-toggle {
-    display: inline-flex;
-    gap: 6px;
-    padding: 4px;
-    border-radius: 999px;
-    background: $color-slate-100;
-    margin-bottom: 16px;
-}
+        .type-toggle {
+            display: inline-flex;
+            gap: 6px;
+            padding: 4px;
+            border-radius: 999px;
+            background: $color-slate-100;
+            margin-bottom: 16px;
 
-.type-toggle-btn {
-    border: none;
-    background: transparent;
-    padding: 8px 16px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 600;
-    color: $color-slate-600;
-    cursor: pointer;
-    transition: background 200ms ease, color 200ms ease;
+            .type-toggle-btn {
+                border: none;
+                background: transparent;
+                padding: 8px 16px;
+                border-radius: 999px;
+                font-size: 13px;
+                font-weight: 600;
+                color: $color-slate-600;
+                cursor: pointer;
+                transition: background 200ms ease, color 200ms ease;
 
-    &.is-active {
-        background: $color-white;
-        color: $color-slate-900;
-        box-shadow: $shadow-sm;
+                &.is-active {
+                    background: $color-white;
+                    color: $color-slate-900;
+                    box-shadow: $shadow-sm;
+                }
+            }
+        }
+
+        .compose-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+
+            .form-field {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+
+                &.form-full {
+                    grid-column: 1 / -1;
+                }
+
+                .form-label {
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: $color-slate-700;
+                }
+
+                .textarea {
+                    resize: vertical;
+                    min-height: 120px;
+                }
+
+                .form-hint {
+                    font-size: 12px;
+                    color: $color-slate-500;
+                }
+            }
+        }
+
+        .form-error {
+            margin-top: 12px;
+            color: $color-rose-600;
+            font-size: 13px;
+        }
+
+        .form-success {
+            margin-top: 12px;
+            color: $color-emerald-600;
+            font-size: 13px;
+        }
+
+        .compose-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .message-table {
+            padding: 0;
+            overflow: hidden;
+
+            .table-scroll {
+                overflow-x: auto;
+            }
+
+            .message-type {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+
+                .type-badge {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 4px 10px;
+                    border-radius: 999px;
+                    font-size: 12px;
+                    font-weight: 600;
+
+                    &.badge-class {
+                        background: rgba(124, 58, 237, 0.12);
+                        color: $color-primary;
+                    }
+
+                    &.badge-student {
+                        background: #fef3c7;
+                        color: #92400e;
+                    }
+                }
+
+                .type-target {
+                    font-size: 13px;
+                    color: $color-slate-600;
+                }
+            }
+
+            .message-content {
+                max-width: 320px;
+                color: $color-slate-700;
+            }
+
+            .empty-state {
+                padding: 32px;
+                text-align: center;
+                font-size: 14px;
+                color: $color-slate-500;
+            }
+        }
+
+        .table-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0 0;
+            gap: 12px;
+            flex-wrap: wrap;
+
+            .pagination-text {
+                font-size: 13px;
+                color: $color-slate-500;
+            }
+
+            .pagination-nav {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                .pagination-link {
+                    border: none;
+                    background: $color-slate-100;
+                    color: $color-slate-700;
+                    padding: 6px 12px;
+                    border-radius: 10px;
+                    font-size: 13px;
+                    cursor: pointer;
+                    transition: background 200ms ease, color 200ms ease;
+
+                    &:hover {
+                        background: $color-slate-200;
+                        color: $color-slate-900;
+                    }
+
+                    &.is-disabled {
+                        cursor: not-allowed;
+                        opacity: 0.6;
+                    }
+                }
+
+                .pagination-page {
+                    font-size: 13px;
+                    color: $color-slate-600;
+                }
+            }
+        }
     }
-}
-
-.compose-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-}
-
-.form-field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.form-field.form-full {
-    grid-column: 1 / -1;
-}
-
-.form-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: $color-slate-700;
-}
-
-.textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-.form-hint {
-    font-size: 12px;
-    color: $color-slate-500;
-}
-
-.form-error {
-    margin-top: 12px;
-    color: $color-rose-600;
-    font-size: 13px;
-}
-
-.form-success {
-    margin-top: 12px;
-    color: $color-emerald-600;
-    font-size: 13px;
-}
-
-.compose-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    margin-top: 16px;
-    flex-wrap: wrap;
-}
-
-.filter-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-    margin-bottom: 16px;
-}
-
-.message-table {
-    padding: 0;
-    overflow: hidden;
-}
-
-.table-scroll {
-    overflow-x: auto;
-}
-
-.message-type {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.type-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.type-badge.badge-class {
-    background: rgba(124, 58, 237, 0.12);
-    color: $color-primary;
-}
-
-.type-badge.badge-student {
-    background: #fef3c7;
-    color: #92400e;
-}
-
-.type-target {
-    font-size: 13px;
-    color: $color-slate-600;
-}
-
-.message-content {
-    max-width: 320px;
-    color: $color-slate-700;
-}
-
-.empty-state {
-    padding: 32px;
-    text-align: center;
-    font-size: 14px;
-    color: $color-slate-500;
-}
-
-.table-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 0 0;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.pagination-text {
-    font-size: 13px;
-    color: $color-slate-500;
-}
-
-.pagination-nav {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.pagination-link {
-    border: none;
-    background: $color-slate-100;
-    color: $color-slate-700;
-    padding: 6px 12px;
-    border-radius: 10px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: background 200ms ease, color 200ms ease;
-
-    &:hover {
-        background: $color-slate-200;
-        color: $color-slate-900;
-    }
-
-    &.is-disabled {
-        cursor: not-allowed;
-        opacity: 0.6;
-    }
-}
-
-.pagination-page {
-    font-size: 13px;
-    color: $color-slate-600;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    * {
-        transition: none !important;
+    .message-page {
+        * {
+            transition: none !important;
+        }
     }
 }
 </style>

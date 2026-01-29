@@ -179,211 +179,219 @@ const handlePasswordUpdate = async () => {
 <style scoped lang="scss">
 @use '@/assets/tokens' as *;
 
-.settings-title {
-    font-size: 24px;
-    font-weight: 700;
-}
+.settings-page {
+    .settings-title {
+        font-size: 24px;
+        font-weight: 700;
+    }
 
-.settings-layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
-}
+    .settings-layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
 
-.settings-sidebar {
-    background: transparent;
-}
+        .settings-sidebar {
+            background: transparent;
 
-.settings-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+            .settings-nav {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
 
-    .nav-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px 16px;
-        border-radius: 14px;
-        border: none;
-        background: transparent;
-        color: $color-slate-600;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 200ms ease, color 200ms ease;
+                .nav-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 12px 16px;
+                    border-radius: 14px;
+                    border: none;
+                    background: transparent;
+                    color: $color-slate-600;
+                    font-size: 14px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: background 200ms ease, color 200ms ease;
 
-        &:hover {
-            background: $color-slate-100;
-        }
+                    &:hover {
+                        background: $color-slate-100;
+                    }
 
-        &.is-active {
-            background: rgba(124, 58, 237, 0.12);
-            color: $color-primary;
+                    &.is-active {
+                        background: rgba(124, 58, 237, 0.12);
+                        color: $color-primary;
 
-            .nav-icon {
-                color: $color-primary;
+                        .nav-icon {
+                            color: $color-primary;
+                        }
+                    }
+
+                    .nav-icon {
+                        color: $color-slate-400;
+                    }
+                }
             }
         }
 
-        .nav-icon {
-            color: $color-slate-400;
+        .settings-content {
+            .settings-card {
+                padding: 24px;
+
+                .settings-section {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 24px;
+
+                    .profile-block {
+                        display: flex;
+                        align-items: center;
+                        gap: 24px;
+                        flex-wrap: wrap;
+
+                        .profile-avatar {
+                            width: 96px;
+                            height: 96px;
+                            border-radius: 999px;
+                            background: $color-slate-100;
+                            color: $color-slate-400;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 32px;
+                            font-weight: 700;
+                            border: 4px solid $color-white;
+                            box-shadow: $shadow-sm;
+                            overflow: hidden;
+                            position: relative;
+
+                            .avatar-image {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                            }
+                        }
+
+                        .avatar-edit {
+                            position: absolute;
+                            bottom: 0;
+                            right: 0;
+                            background: $color-white;
+                            border: 1px solid $color-slate-200;
+                            border-radius: 999px;
+                            padding: 6px;
+                            cursor: pointer;
+                            box-shadow: $shadow-sm;
+
+                            &:hover {
+                                background: $color-slate-100;
+                            }
+                        }
+
+                        .profile-name {
+                            font-size: 18px;
+                            font-weight: 700;
+                            color: $color-slate-900;
+                            margin: 0 0 4px 0;
+                        }
+
+                        .profile-meta {
+                            font-size: 13px;
+                            color: $color-slate-500;
+                        }
+                    }
+                }
+
+                .settings-form {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 20px;
+
+                    &.security-form {
+                        grid-template-columns: 1fr;
+                    }
+
+                    .form-field {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+
+                        .form-label {
+                            font-size: 13px;
+                            font-weight: 600;
+                            color: $color-slate-700;
+                        }
+
+                        .input-disabled {
+                            background: $color-slate-100;
+                            color: $color-slate-500;
+                            cursor: not-allowed;
+                        }
+                    }
+                }
+
+                .section-header {
+                    padding-bottom: 16px;
+                    border-bottom: 1px solid $color-slate-100;
+
+                    .section-title {
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: $color-slate-900;
+                    }
+
+                    .section-subtitle {
+                        font-size: 13px;
+                        color: $color-slate-500;
+                    }
+                }
+
+                .form-error {
+                    color: $color-rose-600;
+                    font-size: 13px;
+                }
+
+                .form-success {
+                    color: $color-emerald-600;
+                    font-size: 13px;
+                }
+
+                .empty-state {
+                    padding: 48px 0;
+                    text-align: center;
+                    color: $color-slate-500;
+
+                    .empty-icon {
+                        width: 48px;
+                        height: 48px;
+                        margin: 0 auto 12px;
+                        color: $color-slate-300;
+                    }
+                }
+
+                .settings-footer {
+                    padding-top: 24px;
+                    margin-top: 24px;
+                    border-top: 1px solid $color-slate-100;
+                    display: flex;
+                    justify-content: flex-end;
+                }
+            }
         }
     }
 }
 
-.settings-card {
-    padding: 24px;
-}
-
-.settings-section {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-.profile-block {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    flex-wrap: wrap;
-}
-
-.profile-avatar {
-    width: 96px;
-    height: 96px;
-    border-radius: 999px;
-    background: $color-slate-100;
-    color: $color-slate-400;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    font-weight: 700;
-    border: 4px solid $color-white;
-    box-shadow: $shadow-sm;
-    overflow: hidden;
-    position: relative;
-}
-
-.avatar-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.avatar-edit {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background: $color-white;
-    border: 1px solid $color-slate-200;
-    border-radius: 999px;
-    padding: 6px;
-    cursor: pointer;
-    box-shadow: $shadow-sm;
-}
-
-.avatar-edit:hover {
-    background: $color-slate-100;
-}
-
-.profile-name {
-    font-size: 18px;
-    font-weight: 700;
-    color: $color-slate-900;
-    margin: 0 0 4px 0;
-}
-
-.profile-meta {
-    font-size: 13px;
-    color: $color-slate-500;
-}
-
-.settings-form {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-}
-
-.security-form {
-    grid-template-columns: 1fr;
-}
-
-.form-field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.form-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: $color-slate-700;
-}
-
-.input-disabled {
-    background: $color-slate-100;
-    color: $color-slate-500;
-    cursor: not-allowed;
-}
-
-.section-header {
-    padding-bottom: 16px;
-    border-bottom: 1px solid $color-slate-100;
-}
-
-.section-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: $color-slate-900;
-}
-
-.section-subtitle {
-    font-size: 13px;
-    color: $color-slate-500;
-}
-
-.form-error {
-    color: $color-rose-600;
-    font-size: 13px;
-}
-
-.form-success {
-    color: $color-emerald-600;
-    font-size: 13px;
-}
-
-.empty-state {
-    padding: 48px 0;
-    text-align: center;
-    color: $color-slate-500;
-}
-
-.empty-icon {
-    width: 48px;
-    height: 48px;
-    margin: 0 auto 12px;
-    color: $color-slate-300;
-}
-
-.settings-footer {
-    padding-top: 24px;
-    margin-top: 24px;
-    border-top: 1px solid $color-slate-100;
-    display: flex;
-    justify-content: flex-end;
-}
-
 @media (min-width: 768px) {
-    .settings-form {
-        grid-template-columns: repeat(2, 1fr);
+    .settings-page {
+        .settings-form {
+            grid-template-columns: repeat(2, 1fr);
+        }
     }
 }
 
 @media (min-width: 1024px) {
-    .settings-layout {
-        grid-template-columns: 240px 1fr;
+    .settings-page {
+        .settings-layout {
+            grid-template-columns: 240px 1fr;
+        }
     }
 }
 </style>
