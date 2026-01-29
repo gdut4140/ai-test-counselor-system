@@ -11,7 +11,7 @@ import MessageCenter from '../views/messages/MessageCenter.vue'
 const routes: RouteRecordRaw[] = [
     {
         path: '/login',
-        name: 'login',
+        name: 'Login',
         component: Login
     },
     {
@@ -21,32 +21,32 @@ const routes: RouteRecordRaw[] = [
         children: [
             {
                 path: 'dashboard',
-                name: 'dashboard',
+                name: 'Dashboard',
                 component: Dashboard
             },
             {
                 path: 'activities',
-                name: 'activities',
+                name: 'ActivityList',
                 component: ActivityList
             },
             {
                 path: 'students',
-                name: 'students',
+                name: 'StudentList',
                 component: StudentList
             },
             {
                 path: 'courses',
-                name: 'courses',
+                name: 'CourseList',
                 component: CourseList
             },
             {
                 path: 'system',
-                name: 'system',
+                name: 'SystemSettings',
                 component: SystemSettings
             },
             {
                 path: 'messages',
-                name: 'messages',
+                name: 'MessageCenter',
                 component: MessageCenter
             }
         ]
