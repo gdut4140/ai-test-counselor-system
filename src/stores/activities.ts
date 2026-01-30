@@ -43,6 +43,7 @@ interface ActivityApiItem {
     registrationEndTime: string
     location: string
     maxParticipants: number
+    currentParticipants?: number
     instructorId: number
     instructorPhone: string
     description: string
@@ -76,7 +77,7 @@ export const useActivityStore = defineStore('activities', () => {
             status: item.status,
             startTime: item.startTime,
             location: item.location,
-            participants: Math.min(item.maxParticipants, Math.floor(item.maxParticipants * 0.4)),
+            participants: item.currentParticipants ?? Math.min(item.maxParticipants, Math.floor(item.maxParticipants * 0.4)),
             maxParticipants: item.maxParticipants,
             cover: item.publishStatus === 'published' ? 'cover-indigo' : 'cover-amber',
             publishStatus: item.publishStatus,
@@ -131,15 +132,20 @@ export const useActivityStore = defineStore('activities', () => {
         return merged
     }
 
-    async function updateActivity(activityId: number) {
+    async function updateActivity(activityId: number, input?: Partial<ActivityCreateInput>) {
         const response = await fetch('/mock/api/admin/activity/update.json')
         if (!response.ok) throw new Error('Failed to update activity')
         const payload = (await response.json()) as ApiResponse<ActivityApiItem>
         if (payload.code !== 200) throw new Error(payload.msg || 'Failed to update activity')
         const mapped = mapApiItem(payload.data)
+        const merged: Activity = {
+            ...mapped,
+            ...input,
+            description: input?.description ?? mapped.description
+        }
         const index = items.value.findIndex(item => item.id === activityId)
-        if (index >= 0) items.value[index] = mapped
-        return mapped
+        if (index >= 0) items.value[index] = merged
+        return merged
     }
 
     async function publishActivity(activityId: number) {
@@ -179,13 +185,6 @@ export const useActivityStore = defineStore('activities', () => {
         return payload.data
     }
 
-    async function handleActivityRegistration(_registrationId: number, _action: string) {
-        const response = await fetch('/mock/api/admin/activity/registration/handle.json')
-        if (!response.ok) throw new Error('Failed to handle registration')
-        const payload = (await response.json()) as ApiResponse<null>
-        if (payload.code !== 200) throw new Error(payload.msg || 'Failed to handle registration')
-        return true
-    }
 
     async function fetchActivityParticipation(_activityId: number) {
         const response = await fetch('/mock/api/admin/activity/participation.json')
@@ -205,7 +204,18 @@ export const useActivityStore = defineStore('activities', () => {
 
     return {
         items,
+        isLoading,
+        error,
+        todayActivitiesCount,
         registeringCount,
+        fetchActivities,
+        fetchActivityDetail,
+        fetchActivityRegistrations,
+        fetchActivityParticipation,
         createActivity,
+        updateActivity,
+        publishActivity,
+        unpublishActivity,
+        deleteActivity,
     }
 })
