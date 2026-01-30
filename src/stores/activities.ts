@@ -205,20 +205,7 @@ export const useActivityStore = defineStore('activities', () => {
 
     return {
         items,
-        isLoading,
-        error,
-        todayActivitiesCount,
         registeringCount,
-        fetchActivities,
-        fetchActivityDetail,
-        fetchActivityRegistrations,
-        fetchActivityParticipation,
-        handleActivityRegistration,
         createActivity,
-        updateActivity,
-        publishActivity,
-        unpublishActivity,
-        deleteActivity,
-        init
     }
 })
