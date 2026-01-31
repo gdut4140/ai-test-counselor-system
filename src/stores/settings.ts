@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -21,9 +22,8 @@ export const useSettingsStore = defineStore('settings', () => {
         isLoading.value = true
         error.value = null
         try {
-            const response = await fetch('/mock/settings.mock.json')
-            if (!response.ok) throw new Error('Failed to load settings')
-            notificationSettings.value = (await response.json()) as NotificationSetting[]
+            const { data } = await axios.get<NotificationSetting[]>('/mock/settings.mock.json')
+            notificationSettings.value = data
         } catch (err) {
             error.value = err instanceof Error ? err : new Error('Failed to load settings')
         } finally {

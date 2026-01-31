@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
@@ -78,9 +79,7 @@ export const useStudentStore = defineStore('students', () => {
         isLoading.value = true
         error.value = null
         try {
-            const response = await fetch('/mock/api/admin/student/list.json')
-            if (!response.ok) throw new Error('Failed to load students')
-            const payload = (await response.json()) as ApiResponse<StudentApiItem[]>
+            const { data: payload } = await axios.get<ApiResponse<StudentApiItem[]>>('/mock/api/admin/student/list.json')
             if (payload.code !== 200) throw new Error(payload.msg || 'Failed to load students')
             items.value = payload.data.map(mapApiItem)
         } catch (err) {
@@ -91,33 +90,25 @@ export const useStudentStore = defineStore('students', () => {
     }
 
     async function fetchStudentDetail(_studentId: number) {
-        const response = await fetch('/mock/api/admin/student/detail.json')
-        if (!response.ok) throw new Error('Failed to load student detail')
-        const payload = (await response.json()) as ApiResponse<Record<string, unknown>>
+        const { data: payload } = await axios.get<ApiResponse<Record<string, unknown>>>('/mock/api/admin/student/detail.json')
         if (payload.code !== 200) throw new Error(payload.msg || 'Failed to load student detail')
         return payload.data
     }
 
     async function fetchStudentActivities(_studentId: number) {
-        const response = await fetch('/mock/api/admin/student/registration/detail.json')
-        if (!response.ok) throw new Error('Failed to load student activities')
-        const payload = (await response.json()) as ApiResponse<unknown[]>
+        const { data: payload } = await axios.get<ApiResponse<unknown[]>>('/mock/api/admin/student/registration/detail.json')
         if (payload.code !== 200) throw new Error(payload.msg || 'Failed to load student activities')
         return payload.data
     }
 
     async function fetchStudentAbsences(_studentId: number) {
-        const response = await fetch('/mock/api/admin/student/absent/detail.json')
-        if (!response.ok) throw new Error('Failed to load student absences')
-        const payload = (await response.json()) as ApiResponse<unknown[]>
+        const { data: payload } = await axios.get<ApiResponse<unknown[]>>('/mock/api/admin/student/absent/detail.json')
         if (payload.code !== 200) throw new Error(payload.msg || 'Failed to load student absences')
         return payload.data
     }
 
     async function fetchAttendanceStats(_classId: number) {
-        const response = await fetch('/mock/api/admin/student/attendance/stat.json')
-        if (!response.ok) throw new Error('Failed to load attendance stats')
-        const payload = (await response.json()) as ApiResponse<AttendanceStats>
+        const { data: payload } = await axios.get<ApiResponse<AttendanceStats>>('/mock/api/admin/student/attendance/stat.json')
         if (payload.code !== 200) throw new Error(payload.msg || 'Failed to load attendance stats')
         attendanceStats.value = payload.data
         return payload.data
