@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
@@ -26,9 +27,8 @@ export const useCourseStore = defineStore('courses', () => {
         isLoading.value = true
         error.value = null
         try {
-            const response = await fetch('/mock/courses.json')
-            if (!response.ok) throw new Error('Failed to load courses')
-            courses.value = (await response.json()) as Course[]
+            const { data } = await axios.get<Course[]>('/mock/courses.json')
+            courses.value = data
         } catch (err) {
             error.value = err instanceof Error ? err : new Error('Failed to load courses')
         } finally {

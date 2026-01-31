@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
@@ -38,9 +39,7 @@ export const useMessageStore = defineStore('messages', () => {
         isLoading.value = true
         error.value = null
         try {
-            const response = await fetch('/mock/api/admin/message/send/detail.json')
-            if (!response.ok) throw new Error('Failed to load messages')
-            const payload = (await response.json()) as ApiResponse<MessageItem[]>
+            const { data: payload } = await axios.get<ApiResponse<MessageItem[]>>('/mock/api/admin/message/send/detail.json')
             if (payload.code !== 200) throw new Error(payload.msg || 'Failed to load messages')
             items.value = payload.data
         } catch (err) {
@@ -51,9 +50,7 @@ export const useMessageStore = defineStore('messages', () => {
     }
 
     async function sendMessage(input: MessageSendPayload) {
-        const response = await fetch('/mock/api/admin/message/send.json')
-        if (!response.ok) throw new Error('Failed to send message')
-        const payload = (await response.json()) as ApiResponse<null>
+        const { data: payload } = await axios.get<ApiResponse<null>>('/mock/api/admin/message/send.json')
         if (payload.code !== 200) throw new Error(payload.msg || 'Failed to send message')
 
         const now = new Date()

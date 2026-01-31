@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
@@ -37,9 +38,7 @@ export const useAuthStore = defineStore('auth', () => {
     async function login(_credentials: Credentials) {
         isLoading.value = true
         try {
-            const response = await fetch('/mock/api/admin/user/login.json')
-            if (!response.ok) throw new Error('登录失败')
-            const payload = (await response.json()) as ApiResponse<string>
+            const { data: payload } = await axios.get<ApiResponse<string>>('/mock/api/admin/user/login.json')
             if (payload.code !== 200) throw new Error(payload.msg || '登录失败')
             token.value = payload.data
             user.value = {
@@ -59,7 +58,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     async function logout() {
         try {
-            await fetch('/mock/api/admin/user/logout.json')
+            await axios.get('/mock/api/admin/user/logout.json')
         } finally {
             token.value = null
             user.value = null
@@ -68,17 +67,13 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     async function updatePassword(oldPassword: string, newPassword: string) {
-        const response = await fetch('/mock/api/admin/user/password/update.json')
-        if (!response.ok) throw new Error('修改密码失败')
-        const payload = (await response.json()) as ApiResponse<null>
+        const { data: payload } = await axios.get<ApiResponse<null>>('/mock/api/admin/user/password/update.json')
         if (payload.code !== 200) throw new Error(payload.msg || '修改密码失败')
         return { oldPassword, newPassword }
     }
 
     async function requestPasswordReset(_payload: ResetPasswordPayload) {
-        const response = await fetch('/mock/api/admin/user/password/reset.json')
-        if (!response.ok) throw new Error('重置密码申请失败')
-        const payload = (await response.json()) as ApiResponse<null>
+        const { data: payload } = await axios.get<ApiResponse<null>>('/mock/api/admin/user/password/reset.json')
         if (payload.code !== 200) throw new Error(payload.msg || '重置密码申请失败')
         return true
     }

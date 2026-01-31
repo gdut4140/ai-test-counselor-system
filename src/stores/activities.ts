@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
@@ -94,9 +95,7 @@ export const useActivityStore = defineStore('activities', () => {
         isLoading.value = true
         error.value = null
         try {
-            const response = await fetch('/mock/api/admin/activity/list.json')
-            if (!response.ok) throw new Error('Failed to load activities')
-            const payload = (await response.json()) as ApiResponse<ActivityApiItem[]>
+            const { data: payload } = await axios.get<ApiResponse<ActivityApiItem[]>>('/mock/api/admin/activity/list.json')
             if (payload.code !== 200) throw new Error(payload.msg || 'Failed to load activities')
             items.value = payload.data.map(mapApiItem)
         } catch (err) {
@@ -107,17 +106,13 @@ export const useActivityStore = defineStore('activities', () => {
     }
 
     async function fetchActivityDetail(activityId: number) {
-        const response = await fetch('/mock/api/admin/activity/detail.json')
-        if (!response.ok) throw new Error('Failed to load activity detail')
-        const payload = (await response.json()) as ApiResponse<ActivityApiItem>
+        const { data: payload } = await axios.get<ApiResponse<ActivityApiItem>>('/mock/api/admin/activity/detail.json')
         if (payload.code !== 200) throw new Error(payload.msg || 'Failed to load activity detail')
         return mapApiItem(payload.data)
     }
 
     async function createActivity(input?: Partial<ActivityCreateInput>) {
-        const response = await fetch('/mock/api/admin/activity/create.json')
-        if (!response.ok) throw new Error('Failed to create activity')
-        const payload = (await response.json()) as ApiResponse<ActivityApiItem>
+        const { data: payload } = await axios.get<ApiResponse<ActivityApiItem>>('/mock/api/admin/activity/create.json')
         if (payload.code !== 200) throw new Error(payload.msg || 'Failed to create activity')
         const mapped = mapApiItem(payload.data)
         const merged: Activity = {
@@ -133,9 +128,7 @@ export const useActivityStore = defineStore('activities', () => {
     }
 
     async function updateActivity(activityId: number, input?: Partial<ActivityCreateInput>) {
-        const response = await fetch('/mock/api/admin/activity/update.json')
-        if (!response.ok) throw new Error('Failed to update activity')
-        const payload = (await response.json()) as ApiResponse<ActivityApiItem>
+        const { data: payload } = await axios.get<ApiResponse<ActivityApiItem>>('/mock/api/admin/activity/update.json')
         if (payload.code !== 200) throw new Error(payload.msg || 'Failed to update activity')
         const mapped = mapApiItem(payload.data)
         const merged: Activity = {
@@ -149,9 +142,7 @@ export const useActivityStore = defineStore('activities', () => {
     }
 
     async function publishActivity(activityId: number) {
-        const response = await fetch('/mock/api/admin/activity/publish.json')
-        if (!response.ok) throw new Error('Failed to publish activity')
-        const payload = (await response.json()) as ApiResponse<null>
+        const { data: payload } = await axios.get<ApiResponse<null>>('/mock/api/admin/activity/publish.json')
         if (payload.code !== 200) throw new Error(payload.msg || 'Failed to publish activity')
         const target = items.value.find(item => item.id === activityId)
         if (target) target.publishStatus = 'published'
@@ -159,9 +150,7 @@ export const useActivityStore = defineStore('activities', () => {
     }
 
     async function unpublishActivity(activityId: number) {
-        const response = await fetch('/mock/api/admin/activity/unpublish.json')
-        if (!response.ok) throw new Error('Failed to unpublish activity')
-        const payload = (await response.json()) as ApiResponse<null>
+        const { data: payload } = await axios.get<ApiResponse<null>>('/mock/api/admin/activity/unpublish.json')
         if (payload.code !== 200) throw new Error(payload.msg || 'Failed to unpublish activity')
         const target = items.value.find(item => item.id === activityId)
         if (target) target.publishStatus = 'unpublished'
@@ -169,27 +158,21 @@ export const useActivityStore = defineStore('activities', () => {
     }
 
     async function deleteActivity(activityId: number) {
-        const response = await fetch('/mock/api/admin/activity/delete.json')
-        if (!response.ok) throw new Error('Failed to delete activity')
-        const payload = (await response.json()) as ApiResponse<null>
+        const { data: payload } = await axios.get<ApiResponse<null>>('/mock/api/admin/activity/delete.json')
         if (payload.code !== 200) throw new Error(payload.msg || 'Failed to delete activity')
         items.value = items.value.filter(item => item.id !== activityId)
         return true
     }
 
     async function fetchActivityRegistrations(_activityId: number) {
-        const response = await fetch('/mock/api/admin/activity/registration/detail.json')
-        if (!response.ok) throw new Error('Failed to load registrations')
-        const payload = (await response.json()) as ApiResponse<unknown[]>
+        const { data: payload } = await axios.get<ApiResponse<unknown[]>>('/mock/api/admin/activity/registration/detail.json')
         if (payload.code !== 200) throw new Error(payload.msg || 'Failed to load registrations')
         return payload.data
     }
 
 
     async function fetchActivityParticipation(_activityId: number) {
-        const response = await fetch('/mock/api/admin/activity/participation.json')
-        if (!response.ok) throw new Error('Failed to load participation')
-        const payload = (await response.json()) as ApiResponse<unknown[]>
+        const { data: payload } = await axios.get<ApiResponse<unknown[]>>('/mock/api/admin/activity/participation.json')
         if (payload.code !== 200) throw new Error(payload.msg || 'Failed to load participation')
         return payload.data
     }
